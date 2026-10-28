@@ -837,8 +837,8 @@
             border-color: transparent transparent transparent #fff;
             margin-left: 3px;
         }
-        .gui-scene-cell:hover .gui-scene-play-icon {
-            opacity: 0;
+        @media (hover: hover) {
+            .gui-scene-cell:hover .gui-scene-play-icon { opacity: 0; }
         }
 
         /* Results: stacked rows, each row = input | ours */
@@ -869,10 +869,12 @@
             opacity: 0;
             transition: opacity 0.25s ease;
         }
-        .result-pair:hover .result-label,
         .result-pair.is-playing .result-label { opacity: 1; }
-        .result-pair:hover .gui-scene-play-icon,
         .result-pair.is-playing .gui-scene-play-icon { opacity: 0; }
+        @media (hover: hover) {
+            .result-pair:hover .result-label { opacity: 1; }
+            .result-pair:hover .gui-scene-play-icon { opacity: 0; }
+        }
         .hint-tap { display: none; }
         @media (hover: none) {
             .hint-hover { display: none; }
@@ -896,9 +898,11 @@
             opacity: 0;
             transition: opacity 0.25s ease, background 0.2s ease, border-color 0.2s ease;
         }
-        .result-pair:hover .result-mute-btn,
         .result-pair.is-playing .result-mute-btn { opacity: 1; }
-        .result-mute-btn:hover { background: rgba(0,0,0,0.8); }
+        @media (hover: hover) {
+            .result-pair:hover .result-mute-btn { opacity: 1; }
+            .result-mute-btn:hover { background: rgba(0,0,0,0.8); }
+        }
         .result-mute-btn .icon-unmuted { display: none; }
         .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
         .result-mute-btn.is-unmuted .icon-muted { display: none; }
