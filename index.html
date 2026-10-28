@@ -895,8 +895,20 @@
         .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
         .result-mute-btn.is-unmuted .icon-muted { display: none; }
         .result-mute-btn.is-unmuted .icon-unmuted { display: block; }
+        .results-subtitle {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 36px 0 4px 0;
+            letter-spacing: 0.3px;
+        }
+        .results-subtitle:first-of-type { margin-top: 20px; }
+        /* two square inputs + one 16:9 ours, widths proportional to aspect ratios (9:9:16) */
+        .result-pair-multi { grid-template-columns: 9fr 9fr 16fr; }
         @media (max-width: 520px) {
             .result-pair { grid-template-columns: 1fr; }
+            .result-pair-multi { grid-template-columns: 1fr 1fr; }
+            .result-pair-multi .result-cell-ours { grid-column: 1 / -1; }
         }
 
         .section-subtitle-green {
@@ -1008,8 +1020,9 @@
             </div>
             <p class="caption-center" style="margin-top: 10px; font-style: italic;">Hover over a row to play both videos. Left: input monocular video. Right: our novel-view rendering. Click the speaker button on the right video to hear the binaural audio (headphones recommended).</p>
 
+            <h3 class="results-subtitle">Single sound source</h3>
             <!-- Results: one .result-pair per scene (left: input video, right: ours). Hover a pair to play both. -->
-            <div class="results-list" id="results-list">
+            <div class="results-list" id="results-list-single">
 
                 <div class="result-pair" data-scene="porsche_4">
                     <div class="gui-scene-cell result-cell">
@@ -1045,6 +1058,176 @@
                     </div>
                 </div>
 
+                <div class="result-pair" data-scene="plane_4">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane_4/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane_4/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="van">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/van/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/van/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="tap-dance">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="karate">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/karate/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/karate/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="robot_12">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/robot_12/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="bird_singing_3">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/bird_singing_3/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/bird_singing_3/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair" data-scene="horse-riding">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/horse-riding/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <h3 class="results-subtitle">Multiple sound sources</h3>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Each sound source is captured by its own monocular video (left two). Right: our novel-view rendering of the combined scene.</p>
+            <!-- Multi-source results: two square input videos + ours per row. -->
+            <div class="results-list" id="results-list-multi">
+
+                <div class="result-pair result-pair-multi" data-scene="car-6">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/input-1.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (red car)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/input-2.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (white car)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
+                <div class="result-pair result-pair-multi" data-scene="human-26">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (person 1)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (person 2)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -1054,13 +1237,7 @@
                 <hr>
             </div>
             <p>
-                Recent advances in video generation enable a new paradigm for 3D scene creation: generating camera-controlled videos that simulate scene walkthroughs, then lifting them to 3D via feed-forward reconstruction techniques. This <em>generative reconstruction</em> approach combines the visual fidelity and creative capacity of video models with 3D outputs ready for real-time rendering and simulation.
-            </p>
-            <p>
-                Scaling to large, complex environments requires 3D-consistent video generation over long camera trajectories with large viewpoint changes and location revisits, a setting where current video models degrade quickly. Existing methods for long-horizon generation are fundamentally limited by two forms of degradation: <em>spatial forgetting</em> and <em>temporal drifting</em>. As exploration proceeds, previously observed regions fall outside the model's temporal context, forcing the model to hallucinate structures when revisited. Meanwhile, autoregressive generation accumulates small synthesis errors over time, gradually distorting scene appearance and geometry.
-            </p>
-            <p>
-                We present Lyra 2.0, a framework for generating persistent, explorable 3D worlds at scale. To address spatial forgetting, we maintain per-frame 3D geometry and use it solely for information routing—retrieving relevant past frames and establishing dense correspondences with the target viewpoints—while relying on the generative prior for appearance synthesis. To address temporal drifting, we train with self-augmented histories that expose the model to its own degraded outputs, teaching it to correct drift rather than propagate it. Together, these enable substantially longer and 3D-consistent video trajectories, which we leverage to fine-tune feed-forward reconstruction models that reliably recover high-quality 3D scenes.
+                Recent progress in visual scene generation has extended beyond static 3D scenes toward the more challenging problem of generating dynamic 4D scenes from minimal input. However, sound, despite being intrinsically coupled with dynamic objects and events, remains largely unmodeled in prior work. We introduce Video-to-4DAVScene, a new task that turns a video into an explorable, time-varying 4D audio-visual scene, and SonoWorld4D, the first framework for this task. Given a monocular video, our method generates a 360° static background, reconstructs explicit motion trajectories of dynamic, sound-emitting foreground objects, and synthesizes a physically-grounded sound field consistent across multiple sources through dual-space audio diffusion synchronization. The resulting 4D scene supports real-time novel-view visual and spatial audio rendering. Evaluation on real-world dynamic scenes and a user study demonstrates SonoWorld4D generates 4D audio-visual scenes with perceptually realistic, physically grounded spatial audio consistent with scene geometry and visual content.
             </p>
         </section>
         
@@ -1079,7 +1256,7 @@
     </div>
 </main>
 
-<section id="acknowledgments">
+<!-- <section id="acknowledgments">
     <div class="container">
         <hr>
         <h3>Acknowledgements</h3>
@@ -1089,7 +1266,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <section id="citation">
     <div class="container">
