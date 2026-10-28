@@ -88,6 +88,55 @@
             color: #fff;
         }
 
+        /* "More Research" dropdown in the header nav */
+        nav._links_l9x19_177 li.nav-dropdown { position: relative; }
+        nav._links_l9x19_177 .nav-dropdown-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .nav-label-short { display: none; }
+        nav._links_l9x19_177 .nav-dropdown-toggle svg.chevron { transition: transform 0.2s ease; }
+        nav._links_l9x19_177 .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 160px;
+            margin: 0;
+            padding: 8px 0;
+            list-style: none;
+            background: rgba(13, 13, 13, 0.96);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1001;
+        }
+        nav._links_l9x19_177 .nav-dropdown-menu::before {
+            /* invisible bridge so the pointer can travel from the toggle to the menu */
+            content: '';
+            position: absolute;
+            top: -14px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+        nav._links_l9x19_177 .nav-dropdown-menu li { white-space: nowrap; }
+        nav._links_l9x19_177 .nav-dropdown-menu a {
+            display: block;
+            padding: 8px 18px;
+            font-weight: 500;
+        }
+        nav._links_l9x19_177 .nav-dropdown-menu a:hover { color: var(--accent); background: rgba(255,255,255,0.04); }
+        nav._links_l9x19_177 li.nav-dropdown.open .nav-dropdown-menu { display: block; }
+        nav._links_l9x19_177 li.nav-dropdown.open .nav-dropdown-toggle svg.chevron { transform: rotate(180deg); }
+        @media (hover: hover) {
+            nav._links_l9x19_177 li.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+            nav._links_l9x19_177 li.nav-dropdown:hover .nav-dropdown-toggle svg.chevron { transform: rotate(180deg); }
+        }
+
         ._button_xe5r4_75 {
             background: var(--accent);
             color: #000;
@@ -657,6 +706,15 @@
             ._content_l9x19_124 {
                 gap: 10px;
             }
+
+            nav._links_l9x19_177 ul { gap: 18px; }
+            nav._links_l9x19_177 a { font-size: 0.95em; }
+        }
+
+        @media (max-width: 480px) {
+            nav._links_l9x19_177 ul { gap: 14px; }
+            .nav-label-long { display: none; }
+            .nav-label-short { display: inline; }
         }
 
         @media (max-width: 350px) {
@@ -980,23 +1038,42 @@
         .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
         .result-mute-btn.is-unmuted .icon-muted { display: none; }
         .result-mute-btn.is-unmuted .icon-unmuted { display: block; }
-        .results-group-title {
-            text-align: center;
-            font-size: 1.7em;
-            font-weight: 700;
-            margin: 56px 0 4px 0;
-            letter-spacing: 0.3px;
-        }
-        .results-group-title svg.chevron { vertical-align: middle; margin-left: 6px; transition: transform 0.25s ease; }
-        details.results-group > summary {
+        /* Collapsible group: summary rendered as a pill button + hint line */
+        details.results-group > summary.results-group-summary {
             list-style: none;
             cursor: pointer;
             user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 56px 0 4px 0;
         }
         details.results-group > summary::-webkit-details-marker { display: none; }
-        details.results-group[open] > summary svg.chevron { transform: rotate(180deg); }
+        .results-group-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            border-radius: 999px;
+            border: 1.5px solid var(--accent);
+            background: rgba(46, 196, 182, 0.10);
+            color: var(--accent);
+            font-size: 1.35em;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            box-shadow: 0 0 18px rgba(46, 196, 182, 0.18);
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .results-group-pill svg.chevron { transition: transform 0.25s ease; }
+        details.results-group[open] .results-group-pill svg.chevron { transform: rotate(180deg); }
         @media (hover: hover) {
-            details.results-group > summary:hover { color: var(--accent); }
+            details.results-group > summary:hover .results-group-pill {
+                background: var(--accent);
+                color: #000;
+                box-shadow: 0 0 24px rgba(46, 196, 182, 0.45);
+                transform: translateY(-1px);
+            }
         }
         .ablation-scene-name {
             text-align: center;
@@ -1056,6 +1133,15 @@
                 <li><a href="#results">Results</a></li>
                 <li><a href="#abstract">Abstract</a></li>
                 <li><a href="#method">Method</a></li>
+                <li class="nav-dropdown" id="nav-more-research">
+                    <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span class="nav-label-long">More Research</span><span class="nav-label-short">More</span>
+                        <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </a>
+                    <ul class="nav-dropdown-menu">
+                        <li><a href="https://humathe.github.io/sonoworld/" target="_blank" rel="noopener noreferrer">SonoWorld</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
@@ -1353,9 +1439,11 @@
             </div>
 
             <details class="results-group" id="ablations">
-                <summary class="results-group-title">
-                    Ablations
-                    <svg class="chevron" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <summary class="results-group-summary">
+                    <span class="results-group-pill">
+                        Ablations
+                        <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
                 </summary>
                 <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Ours (T2A), which generates each dynamic-source track from text, and Ours (V2A), which generates audio conditioned on the input video. Click the speaker buttons to compare.</p>
                 <div class="results-list" id="results-list-ablation">
@@ -2158,6 +2246,26 @@
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupTeaserMute();
     else window.addEventListener('DOMContentLoaded', setupTeaserMute);
+
+    // Header "More Research" dropdown: hover on desktop (CSS), tap to toggle on touch; click outside closes.
+    function setupNavDropdown() {
+        const dd = document.getElementById('nav-more-research');
+        if (!dd) return;
+        const toggle = dd.querySelector('.nav-dropdown-toggle');
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const open = dd.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', (e) => {
+            if (!dd.contains(e.target)) {
+                dd.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupNavDropdown();
+    else window.addEventListener('DOMContentLoaded', setupNavDropdown);
 
 </script>
 </body>
