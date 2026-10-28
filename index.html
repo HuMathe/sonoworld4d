@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Lyra 2.0: Explorable Generative 3D Worlds</title>
-    <meta property="og:description" content="Lyra 2.0: Explorable Generative 3D Worlds — camera-controlled walkthrough videos lifted to 3D via feed-forward reconstruction. We address spatial forgetting and temporal drifting for long-horizon, 3D-consistent generation."/>
+    <title>SonoWorld4D: From One Video to a 4D Audio-Visual Scene via Diffusion Synchronization</title>
+    <meta property="og:description" content="SonoWorld4D: From One Video to a 4D Audio-Visual Scene via Diffusion Synchronization"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preload" as="video" href="assets/teaser.mp4" type="video/mp4">
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
             --heading-color: #f0f0f0;
             --subtle-text-color: #a0a0a0;
             --border-color: #333;
-            --accent-green: #76B900;
+            --accent: #2EC4B6;
             --gradient-start: #8a7ff8;
             --gradient-end: #4d90fe;
         }
@@ -89,7 +89,7 @@
         }
 
         ._button_xe5r4_75 {
-            background: var(--accent-green);
+            background: var(--accent);
             color: #000;
             padding: 10px 20px;
             border-radius: 20px;
@@ -100,7 +100,7 @@
         ._button_xe5r4_75:hover {
             background: #fff;
             color: #000;
-            box-shadow: 0 0 15px rgba(118, 185, 0, 0.5);
+            box-shadow: 0 0 15px rgba(46, 196, 182, 0.5);
         }
 
         /* Spacers */
@@ -120,7 +120,7 @@
         h2 { font-size: 2.8em; line-height: 1.2; }
         h3 { font-size: 1.8em; line-height: 1.3; margin-top: 60px; }
 
-        .accent-text { color: var(--accent-green); }
+        .accent-text { color: var(--accent); }
         .gradient-text {
             background: -webkit-linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
@@ -146,8 +146,8 @@
             width: fit-content;
             margin: 8px auto 0 auto;
             padding: 4px 12px;
-            /* border: 1px solid var(--accent-green); */
-            color: var(--accent-green);
+            /* border: 1px solid var(--accent); */
+            color: var(--accent);
             /* border-radius: 9999px; */
             font-weight: 500;
             font-size: 1.5em;
@@ -167,7 +167,7 @@
         .author-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
         .author-row .col-4 { flex: 1; max-width: 20%; text-align: center; }
         .author-row a { color: var(--text-color); text-decoration: none; font-weight: 500; }
-        .author-row a:hover { color: var(--accent-green); }
+        .author-row a:hover { color: var(--accent); }
         .equal-contrib { font-size: 0.8em; color: var(--subtle-text-color); text-align: center; margin-top: 5px; }
         .affil-row { text-align: center; margin-top: 15px; color: var(--subtle-text-color); }
         .venue { margin-top:20px; font-style: italic; text-align: center; }
@@ -176,7 +176,7 @@
         .video-display-module { margin-top: 40px; }
         .view-toggle { text-align: center; margin-bottom: 20px; }
         .view-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--subtle-text-color); padding: 8px 16px; margin: 0 5px; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
-        .view-toggle-btn.active { background-color: var(--accent-green); color: #000; border-color: var(--accent-green); }
+        .view-toggle-btn.active { background-color: var(--accent); color: #000; border-color: var(--accent); }
         .view-content { display: none; }
         .view-content.active { display: block; }
         .new-video-container { background-color: #000; border-radius: 16px; overflow: hidden; margin: 20px auto; max-width: 900px; }
@@ -186,11 +186,11 @@
         .new-scene-pill { cursor: pointer; border: none; background: transparent; padding: 0; }
         .new-card-img { width: 60px; height: 60px; border: 3px solid var(--border-color); border-radius: 12px; transition: all 0.3s ease; }
         .new-scene-pill:hover .new-card-img { transform: scale(1.1); border-color: var(--subtle-text-color); }
-        .new-scene-pill.active .new-card-img { width: 75px; height: 75px; border-color: var(--accent-green); box-shadow: 0 0 15px rgba(118, 185, 0, 0.6); }
+        .new-scene-pill.active .new-card-img { width: 75px; height: 75px; border-color: var(--accent); box-shadow: 0 0 15px rgba(46, 196, 182, 0.6); }
         
         .new-center-pills { list-style: none; padding: 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .new-method-pill a { color: var(--subtle-text-color); background: var(--dark-background); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 16px; text-decoration: none; display: block; cursor: pointer; transition: all 0.3s; }
-        .new-method-pill.active a { color: #000; background: var(--accent-green); border-color: var(--accent-green); }
+        .new-method-pill.active a { color: #000; background: var(--accent); border-color: var(--accent); }
 
         /* New Scenario Carousel Section */
         #explore-scenarios {
@@ -323,7 +323,7 @@
             width: 40px;
             height: 40px;
             border: 4px solid #333;
-            border-top: 4px solid var(--accent-green);
+            border-top: 4px solid var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -380,7 +380,7 @@
         }
 
         .scenario-dot.active {
-            background-color: var(--accent-green);
+            background-color: var(--accent);
             transform: scale(1.2);
         }
 
@@ -397,7 +397,7 @@
         .new-scene-pill-3d { margin: 0 6px; cursor: pointer; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; background: transparent; border: none; padding: 0; }
         .dot-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: var(--border-color); transition: all 0.3s ease; }
         .new-scene-pill-3d:hover .dot-indicator { background-color: var(--subtle-text-color); }
-        .new-scene-pill-3d.active .dot-indicator { background-color: var(--accent-green); transform: scale(1.5); box-shadow: 0 0 8px rgba(118, 185, 0, 0.6); }
+        .new-scene-pill-3d.active .dot-indicator { background-color: var(--accent); transform: scale(1.5); box-shadow: 0 0 8px rgba(46, 196, 182, 0.6); }
         
         /* Footer */
         footer { padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
@@ -532,15 +532,15 @@
             background-color: rgba(255,255,255,0.03);
             padding: 15px;
             border-radius: 6px;
-            border-left: 3px solid var(--accent-green);
+            border-left: 3px solid var(--accent);
         }
 
         .contributors-card.secondary {
-            border-left-color: rgba(118, 185, 0, 0.6);
+            border-left-color: rgba(46, 196, 182, 0.6);
         }
 
         .contributors-card h3 {
-            color: var(--accent-green);
+            color: var(--accent);
             margin: 0 0 10px 0;
             font-size: 1.1em;
         }
@@ -563,7 +563,7 @@
         }
 
         .contributors-list strong {
-            color: var(--accent-green);
+            color: var(--accent);
         }
 
         @media (max-width: 768px) {
@@ -683,8 +683,8 @@
             font-weight: 600;
             line-height: 1.4;
             color: #fff;
-            background: rgba(118, 185, 0, 0.15);
-            border: 1px solid rgba(118, 185, 0, 0.4);
+            background: rgba(46, 196, 182, 0.15);
+            border: 1px solid rgba(46, 196, 182, 0.4);
             border-radius: 4px;
             pointer-events: none;
             user-select: none;
@@ -692,8 +692,8 @@
             transition: background 0.2s, border-color 0.2s;
         }
         .video-mode-badge.is-video {
-            background: rgba(118, 185, 0, 0.25);
-            border-color: rgba(118, 185, 0, 0.6);
+            background: rgba(46, 196, 182, 0.25);
+            border-color: rgba(46, 196, 182, 0.6);
         }
         .edit-type-badge {
             position: absolute;
@@ -761,15 +761,15 @@
         /* Explore section (Cosmos-Drive-Dreams style) */
         .explore-carousel-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0; }
         .explore-carousel-arrow { background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-color); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2em; transition: background 0.2s, border-color 0.2s; }
-        .explore-carousel-arrow:hover { background: rgba(255,255,255,0.12); border-color: var(--accent-green); color: var(--accent-green); }
+        .explore-carousel-arrow:hover { background: rgba(255,255,255,0.12); border-color: var(--accent); color: var(--accent); }
         .explore-subsection { margin: 36px 0 48px 0; }
         .explore-subsection h3 { margin-bottom: 12px; font-size: 1.25em; }
         .explore-subsection > p { margin: 8px 0; color: var(--subtle-text-color); font-size: 0.95em; max-width: 900px; }
         .explore-subsection > p.note { font-style: italic; margin-top: 6px; }
         .explore-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 20px 0; }
         .explore-tab { background: transparent; border: 1px solid var(--border-color); color: var(--subtle-text-color); padding: 10px 18px; border-radius: 24px; cursor: pointer; font-size: 0.95em; transition: all 0.2s; }
-        .explore-tab:hover { border-color: var(--accent-green); color: var(--accent-green); }
-        .explore-tab.active { background: var(--accent-green); border-color: var(--accent-green); color: #000; }
+        .explore-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .explore-tab.active { background: var(--accent); border-color: var(--accent); color: #000; }
         .explore-content { max-width: 1200px; margin: 0 auto; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
         .explore-content video, .explore-content img { width: 100%; height: auto; display: block; }
         .explore-pane { display: none; }
@@ -841,9 +841,67 @@
             opacity: 0;
         }
 
+        /* Results: stacked rows, each row = input | ours */
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1200px;
+            width: 95%;
+            margin: 20px auto 0 auto;
+        }
+        .result-pair {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .result-label {
+            position: absolute;
+            right: 10px;
+            bottom: 8px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            font-size: 0.8em;
+            letter-spacing: 0.2px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .result-pair:hover .result-label { opacity: 1; }
+        .result-pair:hover .gui-scene-play-icon { opacity: 0; }
+        .result-mute-btn {
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+            opacity: 0;
+            transition: opacity 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+        .result-pair:hover .result-mute-btn { opacity: 1; }
+        .result-mute-btn:hover { background: rgba(0,0,0,0.8); }
+        .result-mute-btn .icon-unmuted { display: none; }
+        .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
+        .result-mute-btn.is-unmuted .icon-muted { display: none; }
+        .result-mute-btn.is-unmuted .icon-unmuted { display: block; }
+        @media (max-width: 520px) {
+            .result-pair { grid-template-columns: 1fr; }
+        }
+
         .section-subtitle-green {
             text-align: center;
-            color: var(--accent-green);
+            color: var(--accent);
             font-size: 1.4em;
             font-weight: 600;
             margin: 40px 0 4px 0;
@@ -859,13 +917,13 @@
 
 <gemini-header id="header" role="banner">
     <div class="_content_l9x19_124">
-        <a class="_logo_l9x19_75" href="https://research.nvidia.com/labs/toronto-ai/" aria-label="NVIDIA Home" style="display:flex; align-items:center; gap:10px; text-decoration:none; max-width:50%;">
+        <!-- <a class="_logo_l9x19_75" href="https://research.nvidia.com/labs/toronto-ai/" aria-label="NVIDIA Home" style="display:flex; align-items:center; gap:10px; text-decoration:none; max-width:50%;">
             <img src="assets/nvidia-logo-vert-rgb-wht-for-screen.png" alt="NVIDIA Logo" style="height: 50px; width: auto;">
             <span style="font-size: 1.2em; font-weight: 700; letter-spacing: 0.5px; color: #fff;">Spatial Intelligence Lab</span>
-        </a>
+        </a> -->
         <nav class="_links_l9x19_177">
             <ul>
-                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#results">Results</a></li>
                 <li><a href="#abstract">Abstract</a></li>
                 <li><a href="#method">Method</a></li>
             </ul>
@@ -876,37 +934,22 @@
 <main id="main">
     <section>
         <div class="container">
-            <h1><span class="accent-text">Lyra 2.0:</span><br>Explorable Generative 3D Worlds</h1>
+            <h1><span class="accent-text">SonoWorld4D:</span><br>From One Video to a 4D Audio-Visual Scene via Diffusion Synchronization</h1>
 
             <!-- Authors -->
             <div id="authors">
                 <div class="author-row">
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~shenti11/" target="_blank">Tianchang Shen</a>*</div>
-                    <div class="col-4"><a href="https://sherwinbahmani.github.io/" target="_blank">Sherwin Bahmani</a></div>
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~hekai/" target="_blank">Kai He</a></div>
-                    <div class="col-4"><a href="https://pages.cs.wisc.edu/~sgsrinivasa2/" target="_blank">Sangeetha Grama Srinivasan</a></div>
-                    <div class="col-4"><a href="https://www.linkedin.com/in/tianshi-cao-a23270b1/" target="_blank">Tianshi Cao</a></div>
-                </div>
-                <div class="author-row">
-                    <div class="col-4"><a href="https://jiawei-ren.github.io/" target="_blank">Jiawei Ren</a></div>
-                    <div class="col-4"><a href="https://www.liruilong.cn/" target="_blank">Ruilong Li</a></div>
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~zianwang/" target="_blank">Zian Wang</a></div>
-                    <div class="col-4"><a href="https://nmwsharp.com/" target="_blank">Nicholas Sharp</a></div>
-                    <div class="col-4"><a href="https://zgojcic.github.io/" target="_blank">Zan Gojcic</a></div>
-                </div>
-                <div class="author-row">
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~fidler/" target="_blank">Sanja Fidler</a></div>
-                    <div class="col-4"><a href="https://huangjh-pub.github.io/" target="_blank">Jiahui Huang</a></div>
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~linghuan/" target="_blank">Huan Ling</a></div>
-                    <div class="col-4"><a href="https://www.cs.toronto.edu/~jungao/" target="_blank">Jun Gao</a></div>
-                    <div class="col-4"><a href="https://xuanchiren.com/" target="_blank">Xuanchi Ren</a>*</div>
+                    <div class="col-4"><a href="https://humathe.github.io/" target="_blank">Derong Jin</a>*</div>
+                    <div class="col-4"><a href="https://xiyichen.github.io/" target="_blank">Xiyi Chen</a>*</div>
+                    <div class="col-4"><a href="https://www.cs.umd.edu/~lin/" target="_blank">Ming C. Lin</a></div>
+                    <div class="col-4"><a href="https://ruohangao.github.io/" target="_blank">Ruohan Gao</a></div>
                 </div>
                 <div class="affil-row">
-                    <span><span style="color: #76B900;">NVIDIA</span></span>
+                    <span><span style="color: #2EC4B6;">University of Maryland, College Park</span></span>
                 </div>
                 <div class="equal-contrib">* Equal Contribution</div>
             </div>
-            <p class="venue">Accepted to SIGGRAPH Asia 2026</p>
+            <p class="venue">Arxiv 2026</p>
         </div>
 
 
@@ -920,19 +963,19 @@
                 <div style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
                     <a href="https://arxiv.org/abs/2604.13036" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/pdf.svg" alt="PDF" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
-                        Read Paper
+                        Paper
                     </a>
-                    <a href="https://github.com/nv-tlabs/lyra/tree/main/Lyra-2" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/HuMathe/sonoworld4D" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/github.svg" alt="GitHub" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
                         Code
                     </a>
-                    <a href="https://huggingface.co/nvidia/Lyra-2.0" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    <!-- <a href="https://huggingface.co/nvidia/Lyra-2.0" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/huggingface.svg" alt="Hugging Face" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
                         Lyra 2.0
-                    </a>
-                    <a href="bibtex.tex" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    </a> -->
+                    <!-- <a href="bibtex.tex" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         BibTeX
-                    </a>
+                    </a> -->
                 </div>
 
                 <!-- Teaser video -->
@@ -943,10 +986,10 @@
                 </section>
 
                 <p><i>
-                    <span style="color: #76B900;"><b>TL;DR:</b></span> We generate camera-controlled walkthrough videos and lift them to 3D via feed-forward reconstruction. To enable long-horizon, 3D-consistent generation, we address <em>spatial forgetting</em> with per-frame geometry for information routing and <em>temporal drifting</em> with self-augmented training that teaches the model to correct drift.
+                    <span style="color: #2EC4B6;"><b>TL;DR:</b></span> We generate camera-controlled walkthrough videos and lift them to 3D via feed-forward reconstruction. To enable long-horizon, 3D-consistent generation, we address <em>spatial forgetting</em> with per-frame geometry for information routing and <em>temporal drifting</em> with self-augmented training that teaches the model to correct drift.
                 </i></p>
 
-                <section id="news">
+                <!-- <section id="news">
                     <div class="container" style="padding: 0;">
                         <h2>News</h2>
                         <hr>
@@ -954,67 +997,55 @@
                     <p style="text-align: left;">🚀 [July 15, 2026] GUI and training code are now available!</p>
                     <p style="text-align: left;">🚀 [April 17, 2026] 4-step DMD distillation LoRA is now available!</p>
                     <p style="text-align: left;">🚀 [April 15, 2026] Paper, model weights, and inference code are now publicly available!</p>
-                </section>
+                </section> -->
             </div>
         </section>
 
-        <section id="gallery">
+        <section id="results">
             <div class="container" style="padding: 0;">
-                <h2>Gallery</h2>
+                <h2>Results</h2>
                 <hr>
             </div>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Hover over a row to play both videos. Left: input monocular video. Right: our novel-view rendering. Click the speaker button on the right video to hear the binaural audio (headphones recommended).</p>
 
-            <div id="isaac-sim">
-                <div class="container" style="padding: 0;">
-                    <h3 class="isaac-sim-subtitle">Creating a simulation-ready 3D environment with interactive GUI</h3>
+            <!-- Results: one .result-pair per scene (left: input video, right: ours). Hover a pair to play both. -->
+            <div class="results-list" id="results-list">
+
+                <div class="result-pair" data-scene="porsche_4">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/porsche_4/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
                 </div>
-                <div class="teaser-video-container" style="margin: 28px auto 16px auto;">
-                    <video class="teaser-video" controls autoplay loop muted playsinline preload="metadata" aria-label="Lyra 2.0 scene exported to Isaac Sim: delivery robot">
-                        <source src="assets/issac_sim/lyra2_delivery_robot_2x.mp4" type="video/mp4">
-                    </video>
+
+                <div class="result-pair" data-scene="plane">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (novel view)</span>
+                    </div>
                 </div>
-                <p class="body-text">
-                    We build an interactive GUI to visualize the accumulated point clouds, and enable users to plan camera trajectories to revisit previously explored regions or venture into unobserved areas. Lyra 2.0 progressively generates the scene as the user moves in the scene.
-                </p>
-                <p class="body-text">
-                    The generated video can be further lifted into 3DGS and meshes, which can be directly exported to physics engines for downstream applications. We provide examples of exporting the scene into Isaac Sim for physically grounded robot navigation and interaction, highlighting the potential for scalable embodied AI simulation.
-                </p>
-                <div class="teaser-video-container" style="margin: 0 auto 12px auto;">
-                    <video class="teaser-video" controls autoplay loop muted playsinline preload="metadata" aria-label="Supplement: Isaac Sim simulation from generated 3D content">
-                        <source src="assets/issac_sim/paper_6441_supplement_video_frames2560-3868.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <hr>
+
             </div>
-
-            <h3 id="image-editing">Scene Exploration</h3>
-            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Hover to play.</p>
-
-            <div class="gui-scenes-grid" id="gui-scenes-grid">
-                <div class="gui-scene-cell">
-                    <video muted playsinline preload="metadata"><source src="assets/gui_scenes/sea_swipe.mp4" type="video/mp4"></video>
-                    <div class="gui-scene-play-icon"></div>
-                </div>
-                <div class="gui-scene-cell">
-                    <video muted playsinline preload="metadata"><source src="assets/gui_scenes/stairs_swipe.mp4" type="video/mp4"></video>
-                    <div class="gui-scene-play-icon"></div>
-                </div>
-                <div class="gui-scene-cell">
-                    <video muted playsinline preload="metadata"><source src="assets/gui_scenes/chinese_temple_swipe.mp4" type="video/mp4"></video>
-                    <div class="gui-scene-play-icon"></div>
-                </div>
-                <div class="gui-scene-cell" data-playback-rate="2">
-                    <video muted playsinline preload="metadata"><source src="assets/gui_scenes/robot_swipe.mp4" type="video/mp4"></video>
-                    <div class="gui-scene-play-icon"></div>
-                </div>
-            </div>
-
-            <h4 class="section-subtitle-green">Diverse Scene Generation</h4>
-            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Hover to play; <br> Click <strong>Show GS</strong> to switch from direct generated video to rendered video from generated Gaussians Splats .</p>
-            <div class="gallery-grid" id="gallery-image-editing">
-                <!-- Placeholder for image editing examples -->
-            </div>
-
         </section>
 
         <section id="abstract">
@@ -1564,7 +1595,7 @@
 
     // GUI scenes 2x2 grid: hover to play, pause on leave
     function setupGuiScenesHover() {
-        document.querySelectorAll('.gui-scene-cell').forEach(cell => {
+        document.querySelectorAll('.gui-scene-cell:not(.result-cell)').forEach(cell => {
             const video = cell.querySelector('video');
             if (!video) return;
             video.muted = true;
@@ -1585,6 +1616,44 @@
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupGuiScenesHover();
     else window.addEventListener('DOMContentLoaded', setupGuiScenesHover);
+
+    // Results rows: hovering a pair plays input + ours in sync; ours is muted until its button is clicked.
+    function setupResultPairs() {
+        document.querySelectorAll('.result-pair').forEach(pair => {
+            const videos = Array.from(pair.querySelectorAll('video'));
+            if (!videos.length) return;
+            videos.forEach(v => { v.loop = true; v.muted = true; });
+            const oursVideo = pair.querySelector('.result-cell-ours video');
+            const muteBtn = pair.querySelector('.result-mute-btn');
+
+            pair.addEventListener('mouseenter', () => {
+                videos.forEach(v => {
+                    try { v.currentTime = 0; } catch (_) {}
+                    v.play().catch(() => {});
+                });
+            });
+            pair.addEventListener('mouseleave', () => {
+                videos.forEach(v => {
+                    v.pause();
+                    try { v.currentTime = 0; } catch (_) {}
+                });
+            });
+
+            if (muteBtn && oursVideo) {
+                muteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    oursVideo.muted = !oursVideo.muted;
+                    const unmuted = !oursVideo.muted;
+                    muteBtn.classList.toggle('is-unmuted', unmuted);
+                    muteBtn.setAttribute('aria-label', unmuted ? 'Mute' : 'Unmute');
+                    muteBtn.title = unmuted ? 'Mute' : 'Unmute';
+                    if (unmuted && oursVideo.paused) oursVideo.play().catch(() => {});
+                });
+            }
+        });
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupResultPairs();
+    else window.addEventListener('DOMContentLoaded', setupResultPairs);
 
 </script>
 </body>

@@ -457,9 +457,9 @@ figure {
 }
 
 .new-method-pill.active {
-    background-color: #76B900;
+    background-color: #2EC4B6;
     color: #fff;
-    border-color: #76B900;
+    border-color: #2EC4B6;
 }
 
 .new-method-pill.active a {
@@ -496,9 +496,9 @@ figure {
 .view-toggle-btn {
     padding: 8px 16px;
     margin: 0 5px;
-    border: 1px solid #76B900;
+    border: 1px solid #2EC4B6;
     background-color: white;
-    color: #76B900;
+    color: #2EC4B6;
     cursor: pointer;
     border-radius: 20px;
     font-weight: bold;
@@ -506,7 +506,7 @@ figure {
 }
 
 .view-toggle-btn.active {
-    background-color: #76B900;
+    background-color: #2EC4B6;
     color: white;
 }
 
@@ -583,8 +583,8 @@ figure {
 .new-dots .new-dot.active .new-card-img {
     width: 70px;
     height: 70px;
-    border-color: #76B900;
-    box-shadow: 0 0 10px rgba(118, 185, 0, 0.7);
+    border-color: #2EC4B6;
+    box-shadow: 0 0 10px rgba(46, 196, 182, 0.7);
     transition: width 0.3s ease-in-out, height 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
