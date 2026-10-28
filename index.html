@@ -1088,6 +1088,31 @@
             display: none;   /* scene names hidden; markup kept for reference */
         }
         .ablation-note { margin-top: 8px; font-style: italic; }
+        /* Separate-track selector under a result row */
+        .track-tabs {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: -8px 0 4px 0;
+        }
+        .track-tabs-hint { color: var(--subtle-text-color); font-size: 0.95em; margin-right: 4px; }
+        .track-tab {
+            padding: 7px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--dark-background);
+            color: var(--subtle-text-color);
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .track-tab.active { background: var(--accent); border-color: var(--accent); color: #000; }
+        @media (hover: hover) {
+            .track-tab:not(.active):hover { border-color: var(--accent); color: var(--accent); }
+        }
         /* two square inputs sharing one grid slot (two-people ablation) */
         .result-input-duo {
             display: grid;
@@ -1182,7 +1207,7 @@
         <section id="explore-scenarios">
             <div class="container-fullwidth">
                 <div style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
-                    <a href="https://arxiv.org/abs/2604.13036" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    <a href="#" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/pdf.svg" alt="PDF" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
                         Paper
                     </a>
@@ -1454,119 +1479,176 @@
                 <div class="results-list" id="results-list-ablation">
 
                 <p class="ablation-scene-name">Plane</p>
-                <div class="result-pair" data-scene="ablation-plane">
+                <div class="result-pair" data-scene="abl-plane">
                     <div class="gui-scene-cell result-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/input.jpg"><source src="assets/results/plane/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                             <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                         </button>
-                        <span class="result-label">Ours</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-plane/ours-t2a.jpg"><source src="assets/results/ablation-plane/ours-t2a.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
-                        <span class="result-label">Ours (T2A)</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-plane/ours-v2a.jpg"><source src="assets/results/ablation-plane/ours-v2a.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
-                        <span class="result-label">Ours (V2A)</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
                 </div>
                 <p class="caption-center ablation-note">* Plane scene at a novel listener pose. Listen for the Doppler shift as the plane passes the input camera and novel listener: V2A overfits to the input viewpoint and fails to adapt the effect to the listener, while T2A alters timbre.</p>
+                <div class="track-tabs" data-for="abl-plane" role="tablist" aria-label="Version">
+                    <span class="track-tabs-hint">Version:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-plane/ours-t2a" data-label="Ours (T2A)">Ours (T2A)</button>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-plane/ours-v2a" data-label="Ours (V2A)">Ours (V2A)</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/plane/ours" data-label="Ours">Ours</button>
+                </div>
 
                 <p class="ablation-scene-name">Tap dance</p>
-                <div class="result-pair" data-scene="ablation-tap-dance">
+                <div class="result-pair" data-scene="abl-tap-dance">
                     <div class="gui-scene-cell result-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/input.jpg"><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                             <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                         </button>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-tap-dance/ours-t2a.jpg"><source src="assets/results/ablation-tap-dance/ours-t2a.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
-                        <span class="result-label">Ours (T2A)</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-tap-dance/ours-v2a.jpg"><source src="assets/results/ablation-tap-dance/ours-v2a.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
-                        <span class="result-label">Ours (V2A)</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="abl-tap-dance" role="tablist" aria-label="Version">
+                    <span class="track-tabs-hint">Version:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-tap-dance/ours-t2a" data-label="Ours (T2A)">Ours (T2A)</button>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-tap-dance/ours-v2a" data-label="Ours (V2A)">Ours (V2A)</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/tap-dance/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Two people</p>
-                <div class="result-pair" data-scene="ablation-human-26">
+                <div class="result-pair" data-scene="abl-human-26">
                     <div class="result-input-duo">
                         <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-1.jpg"><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-label">Input (person 1)</span>
-                    </div>
+                            <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-1.jpg"><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
+                            <div class="gui-scene-play-icon"></div>
+                            <span class="result-label">Input (person 1)</span>
+                        </div>
                         <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-2.jpg"><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-label">Input (person 2)</span>
+                            <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-2.jpg"><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
+                            <div class="gui-scene-play-icon"></div>
+                            <span class="result-label">Input (person 2)</span>
+                        </div>
                     </div>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                             <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                         </button>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-human-26/ours-t2a.jpg"><source src="assets/results/ablation-human-26/ours-t2a.mp4" type="video/mp4"></video>
+                </div>
+                <div class="track-tabs" data-for="abl-human-26" role="tablist" aria-label="Version">
+                    <span class="track-tabs-hint">Version:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-human-26/ours-t2a" data-label="Ours (T2A)">Ours (T2A)</button>
+                    <button class="track-tab" type="button" data-src="assets/results/ablation-human-26/ours-v2a" data-label="Ours (V2A)">Ours (V2A)</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/human-26/ours" data-label="Ours">Ours</button>
+                </div>
+
+                </div>
+            </details>
+
+            <details class="results-group" id="tracks">
+                <summary class="results-group-summary">
+                    <span class="results-group-pill">
+                        Separate Sound Tracks
+                        <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                </summary>
+                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Each sound source is generated and spatialized as its own track. Pick a track to hear it alone at the novel listener pose, or the overall mix.</p>
+                <div class="results-list" id="results-list-tracks">
+
+                <p class="ablation-scene-name">Porsche</p>
+                <div class="result-pair" data-scene="tracks-porsche_4">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/input.jpg"><source src="assets/results/porsche_4/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                             <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                         </button>
-                        <span class="result-label">Ours (T2A)</span>
+                        <span class="result-label track-label">Overall</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-human-26/ours-v2a.jpg"><source src="assets/results/ablation-human-26/ours-v2a.mp4" type="video/mp4"></video>
+                </div>
+                <div class="track-tabs" data-for="tracks-porsche_4" role="tablist" aria-label="Sound track">
+                    <span class="track-tabs-hint">Sound track:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/porsche_4/tracks/birds" data-label="Bird">Bird</button>
+                    <button class="track-tab" type="button" data-src="assets/results/porsche_4/tracks/tree" data-label="Trees">Trees</button>
+                    <button class="track-tab" type="button" data-src="assets/results/porsche_4/tracks/car" data-label="Car">Car</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/porsche_4/ours" data-label="Overall">Overall</button>
+                </div>
+
+                <p class="ablation-scene-name">Tap dance</p>
+                <div class="result-pair" data-scene="tracks-tap-dance">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/input.jpg"><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                             <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                         </button>
-                        <span class="result-label">Ours (V2A)</span>
+                        <span class="result-label track-label">Overall</span>
                     </div>
+                </div>
+                <div class="track-tabs" data-for="tracks-tap-dance" role="tablist" aria-label="Sound track">
+                    <span class="track-tabs-hint">Sound track:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/tap-dance/tracks/dancer" data-label="Dancer">Dancer</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/tap-dance/ours" data-label="Overall">Overall</button>
+                </div>
+
+                <p class="ablation-scene-name">Two cars</p>
+                <div class="result-pair" data-scene="tracks-car-6">
+                    <div class="result-input-duo">
+                        <div class="gui-scene-cell result-cell">
+                            <video muted playsinline preload="metadata" loop poster="assets/results/car-6/input-1.jpg"><source src="assets/results/car-6/input-1.mp4" type="video/mp4"></video>
+                            <div class="gui-scene-play-icon"></div>
+                            <span class="result-label">Input (red car)</span>
+                        </div>
+                        <div class="gui-scene-cell result-cell">
+                            <video muted playsinline preload="metadata" loop poster="assets/results/car-6/input-2.jpg"><source src="assets/results/car-6/input-2.mp4" type="video/mp4"></video>
+                            <div class="gui-scene-play-icon"></div>
+                            <span class="result-label">Input (white car)</span>
+                        </div>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label track-label">Overall</span>
+                    </div>
+                </div>
+                <div class="track-tabs" data-for="tracks-car-6" role="tablist" aria-label="Sound track">
+                    <span class="track-tabs-hint">Sound track:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/car-6/tracks/red-car" data-label="Red car">Red car</button>
+                    <button class="track-tab" type="button" data-src="assets/results/car-6/tracks/white-car" data-label="White car">White car</button>
+                    <button class="track-tab" type="button" data-src="assets/results/car-6/tracks/trees" data-label="Trees">Trees</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/car-6/ours" data-label="Overall">Overall</button>
                 </div>
 
                 </div>
@@ -2520,6 +2602,42 @@
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupResultPairs();
     else window.addEventListener('DOMContentLoaded', setupResultPairs);
+
+    // Separate-track selector: swap the right video's source, keep time/mute/playing state.
+    function setupTrackTabs() {
+        document.querySelectorAll('.track-tabs').forEach(tabs => {
+            const pair = document.querySelector('.result-pair[data-scene="' + tabs.getAttribute('data-for') + '"]');
+            if (!pair) return;
+            const cell = pair.querySelector('.track-cell');
+            const video = cell && cell.querySelector('video');
+            const source = video && video.querySelector('source');
+            const label = cell && cell.querySelector('.track-label');
+            const inputVideo = pair.querySelector('.result-cell:not(.track-cell) video');
+            if (!video || !source) return;
+            tabs.querySelectorAll('.track-tab').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (btn.classList.contains('active')) return;
+                    tabs.querySelectorAll('.track-tab').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const base = btn.getAttribute('data-src');
+                    const wasPlaying = !video.paused;
+                    const t = inputVideo ? inputVideo.currentTime : video.currentTime;
+                    source.src = base + '.mp4';
+                    video.poster = base + '.jpg';
+                    if (label) label.textContent = btn.getAttribute('data-label');
+                    video.load();
+                    const resume = () => {
+                        try { video.currentTime = t; } catch (_) {}
+                        if (wasPlaying) video.play().catch(() => {});
+                    };
+                    video.addEventListener('loadedmetadata', resume, { once: true });
+                });
+            });
+        });
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupTrackTabs();
+    else window.addEventListener('DOMContentLoaded', setupTrackTabs);
 
     // Teaser: autoplays muted; the button toggles its audio.
     function setupTeaserMute() {
