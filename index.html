@@ -166,6 +166,11 @@
         section { padding: 0px 0; }
         .author-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
         .author-row .col-4 { flex: 1; max-width: 20%; text-align: center; }
+        /* Desktop: let each name take only its own width so the four sit close together */
+        @media (min-width: 768px) {
+            .author-row { gap: 28px; }
+            .author-row .col-4 { flex: 0 0 auto; max-width: none; white-space: nowrap; }
+        }
         .author-row a { color: var(--text-color); text-decoration: none; font-weight: 500; }
         .author-row a:hover { color: var(--accent); }
         .equal-contrib { font-size: 0.8em; color: var(--subtle-text-color); text-align: center; margin-top: 5px; }
