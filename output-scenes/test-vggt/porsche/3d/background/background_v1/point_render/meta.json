@@ -1,0 +1,34 @@
+{
+  "run_name": "background_v1",
+  "run_subname": "point_render",
+  "slam_run": "vggt_omega",
+  "mask_run": "sam3",
+  "frames_run": "extracted_frames",
+  "calib_run": "calib_geocalib",
+  "calibration_mode": "calibrated",
+  "use_identity_extrinsics": false,
+  "num_frames": 175,
+  "discard_frames_without_fg": true,
+  "num_frames_without_fg": 1,
+  "frames_without_fg_indices": [
+    86
+  ],
+  "frames_without_fg_ids": [
+    87
+  ],
+  "num_discarded_frames": 1,
+  "discarded_frame_indices": [
+    86
+  ],
+  "discarded_frame_ids": [
+    87
+  ],
+  "bg_ref_idx": 86,
+  "bg_ref_frame_id": 87,
+  "num_points_raw": 41857167,
+  "num_points_saved": 5000000,
+  "conf_threshold": 1.0,
+  "eqr_width": 2048,
+  "pano_depth_convention": "cubemap_face_view_z",
+  "pano_conf_npy": "unnormalized_float32"
+}

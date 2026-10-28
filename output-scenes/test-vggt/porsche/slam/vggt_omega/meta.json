@@ -1,0 +1,13 @@
+{
+  "run_name": "vggt_omega",
+  "backbone": "VGGT-Omega-1B-512",
+  "num_frames": 175,
+  "target_fps": null,
+  "frames_run": "extracted_frames",
+  "image_resolution": 512,
+  "depth_hw": [
+    384,
+    688
+  ],
+  "cameras": "vggt_omega"
+}

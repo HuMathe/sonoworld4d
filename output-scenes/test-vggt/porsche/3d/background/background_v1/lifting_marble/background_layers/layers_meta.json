@@ -1,0 +1,137 @@
+{
+  "layout": "sky_support_occluders",
+  "source": "3d/background/background_v1/lifting_marble/background.ply",
+  "panorama": "3d/background/background_v1/outpainting/pano_outpainted.png",
+  "panorama_size_wh": [
+    2048,
+    1024
+  ],
+  "panorama_source_size_wh": [
+    2048,
+    1024
+  ],
+  "environment": "outdoor",
+  "environment_source": "understanding.json",
+  "prompts": {
+    "sky": [
+      "sky"
+    ],
+    "support": [
+      "wet asphalt road"
+    ]
+  },
+  "support_surface_names": {
+    "0": "wet asphalt road"
+  },
+  "support_surface_source": "understanding.json",
+  "threshold": 0.3,
+  "per_label": {
+    "wet asphalt road": {
+      "masks": 9,
+      "kept": 9,
+      "pixels": 901086
+    },
+    "sky": {
+      "masks": 3,
+      "kept": 3,
+      "pixels": 731384
+    }
+  },
+  "panorama_fraction": {
+    "sky": 0.3487510681152344,
+    "support_semantic": 0.4296712875366211
+  },
+  "support_geometry_enabled": true,
+  "support_geometry": {
+    "0": {
+      "seed_splats": 314956,
+      "semantic_used": true,
+      "semantic_seed_fraction": 0.7181574569146166,
+      "seed_splats_on_semantic": 226188,
+      "grown_splats": 540582,
+      "support_splats": 543560,
+      "status": "ok",
+      "object_diameter_raw": 6.731614465462198,
+      "contact_points": 23600,
+      "support_surface": "wet asphalt road",
+      "object_diagonal_world": 0.11925515470525527,
+      "view_splats_in_front": 4582,
+      "view_occluders_in_front_after_rescue": 1,
+      "rescued_splats": 96,
+      "support_gap_percentiles_world": {
+        "50": 0.0034782444983728067,
+        "90": 0.00998690544969244,
+        "95": 0.012939472677795216,
+        "99": 0.02628467300438421
+      },
+      "contact_margin_world": 0.03154160760526105,
+      "contact_margin_diagonals": 0.2644884213451202
+    }
+  },
+  "contact_margin_world": 0.03154160760526105,
+  "geometry_params": {
+    "frame_stride": 3,
+    "contact_points_per_frame": 400,
+    "seed_radius": 0.5,
+    "core_radius": 0.0,
+    "band": 0.2,
+    "step": 0.08,
+    "slope": 0.25,
+    "max_radius": 2.0,
+    "semantic_min_seed_fraction": 0.1,
+    "absorb_radius": 0.0,
+    "rescue_max_gap": 1.0,
+    "margin_percentile": 99.0,
+    "slam_run": "vggt_omega"
+  },
+  "inputs_stamp": {
+    "files": {
+      "transform": "5b7e433caa935e913e3b4aa6f1a75f445f5d8e37c808262db0d11c60fec2c4ec",
+      "understanding": "08572221cee84f0eeec8a9b9fff432640bf7a52f1b85724fa4448827d50e2850",
+      "panorama": "f631690a7eb86262ca00b2b5ec193258e0b62d67a0f44afcfc3bccda9793adab",
+      "0/aligned": "5c74241079eef0d71efaf28dbb7925607bc041051123136ae5f23bf230b3218d",
+      "0/adaptive_smoothed": "6ba83b80bec64fb6885a5234201309b8cea08a23e6b003f4057e18445157fe22",
+      "0/linear": "6c714ac5629a58d4cbfdad17296415efb47ae3676ac3e9a1d10fd2b1643dd887"
+    },
+    "big": {
+      "marble": {
+        "path": "3d/background/background_v1/lifting_marble/background.ply",
+        "size": 130560417
+      }
+    },
+    "params": {
+      "threshold": 0.3,
+      "environment": "auto",
+      "geometry": {
+        "frame_stride": 3,
+        "contact_points_per_frame": 400,
+        "seed_radius": 0.5,
+        "core_radius": 0.0,
+        "band": 0.2,
+        "step": 0.08,
+        "slope": 0.25,
+        "max_radius": 2.0,
+        "semantic_min_seed_fraction": 0.1,
+        "absorb_radius": 0.0,
+        "rescue_max_gap": 1.0,
+        "margin_percentile": 99.0,
+        "slam_run": "vggt_omega"
+      },
+      "object_ids": [
+        "0"
+      ]
+    }
+  },
+  "splats": {
+    "total": 1920000,
+    "sky": 579291,
+    "support": 543656,
+    "occluders": 797053
+  },
+  "outputs": {
+    "occluders": "3d/background/background_v1/lifting_marble/background_occluders.ply",
+    "sky": "3d/background/background_v1/lifting_marble/background_sky.ply",
+    "support": "3d/background/background_v1/lifting_marble/background_support.ply"
+  },
+  "semantics": "sky = sky splats, outdoor scenes only (sort depth biased far back); support = the surface each object rests on (true depth; the viewer pulls the foreground toward the camera instead); occluders = every other Marble splat (true depth)"
+}
