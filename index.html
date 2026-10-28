@@ -103,6 +103,25 @@
             box-shadow: 0 0 15px rgba(46, 196, 182, 0.5);
         }
 
+        /* Method figures */
+        .method-figure {
+            margin: 36px auto 0 auto;
+            max-width: 80%;   /* same width as the original template's method figure */
+            text-align: center;
+        }
+        .method-figure img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+        }
+        .method-figure figcaption {
+            margin: 14px auto 0 auto;
+            text-align: justify;
+            line-height: 1.6;
+        }
+        .method-figure figcaption b { color: var(--accent); }
+
         /* Bottom bar */
         #bottombar {
             margin-top: 80px;
@@ -1068,7 +1087,7 @@
                 </section>
 
                 <p><i>
-                    <span style="color: #2EC4B6;"><b>TL;DR:</b></span> We propose the first framework to generate an explorable 4D audio-visual scene from a single video, with spatial audio grounded in both moving and static objects, enabling real-time free-viewpoint 4D audio-visual rendering.
+                    <span style="color: #2EC4B6;"><b>TL;DR:</b></span> We propose the first framework to generate an explorable 4D audio-visual scene from a single video, with spatial audio grounded in both moving and static objects, enabling real-time 4D audio-visual rendering.
                 </i></p>
 
                 <!-- <section id="news">
@@ -1315,12 +1334,40 @@
             <div class="container" style="padding: 0;">
                 <h2>Method</h2>
                 <hr>
-                    </div>
-            <div style="display: flex; justify-content: center; margin: 30px 0;">
-                <img src="assets/method_v2.png" alt="Method overview: long-horizon video generation and 3D reconstruction" style="max-width: 80%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.12);">
-                </div>
-            <p>
-                <b>Method overview.</b> (Left) Given an input image, Lyra 2.0 iteratively generates video segments guided by a user&#8209;defined camera trajectory from an interactive 3D explorer and an optional text prompt, lifting each segment into 3D point clouds fed back for continued navigation. Generated video frames are finally reconstructed and exported as 3D Gaussians or meshes. <b>(Right)</b> At each step, history frames with maximal visibility of the target views are retrieved from the spatial memory. Their canonical coordinates are warped to establish dense 3D correspondences and injected into DiT via attention, together with compressed temporal history.            </p>
+            </div>
+
+            <figure class="method-figure">
+                <img src="assets/sonoworld4d.png" alt="SonoWorld4D overview: from a monocular video to a 4D visual scene and a dynamic spatial sound field">
+                <figcaption>
+                    Given a monocular video, SonoWorld4D first reconstructs a 4D visual scene with a static background and dynamic foreground objects. Based on this aligned visual scene representation, it then generates a dynamic spatial sound field by jointly predicting object-space and camera-space audio through diffusion synchronization. The resulting scene supports real-time interactive exploration, rendering semantically and geometrically synchronized visual and spatial audio streams with moving sound sources.
+                </figcaption>
+            </figure>
+
+            <!-- Three-figure version (Overall / Visual / Audio), kept for reference:
+            <figure class="method-figure">
+                <img src="assets/audio-visual.png" alt="Overall pipeline: from an input video to a 4D audio-visual scene">
+                <figcaption>
+                    <b>Overall &mdash; Audio-Visual Scene Generation.</b>
+                    Our pipeline transforms an input video into a 4D audio-visual scene. We first construct an aligned visual scene, then generate foreground and background sounds to form a dynamic sound field.
+                </figcaption>
+            </figure>
+
+            <figure class="method-figure">
+                <img src="assets/visual.png" alt="Visual scene generation: dynamic foreground and static background Gaussians aligned into a 4D scene">
+                <figcaption>
+                    <b>Visual &mdash; Visual Scene Generation.</b>
+                    Using depth, camera poses, and object masks, we generate dynamic foreground Gaussians and static background Gaussians, then align them into a unified 4D visual scene.
+                </figcaption>
+            </figure>
+
+            <figure class="method-figure">
+                <img src="assets/audio.png" alt="Audio scene generation: foreground and background sounds assigned to moving and static sources">
+                <figcaption>
+                    <b>Audio &mdash; Audio Scene Generation.</b>
+                    Conditioned on object trajectories and scene content, we generate foreground and background sounds. These sounds are assigned to moving and static sources to create a dynamic sound field.
+                </figcaption>
+            </figure>
+            -->
         </section>           
 
     </div>
