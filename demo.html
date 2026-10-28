@@ -2416,9 +2416,24 @@
       return slamCvToViewer.clone().multiply(c2w).multiply(CV_TO_GL);
     }
 
-    function applyVggtCamera(frameIdx) {
+    // Recorded camera pose at a fractional frame: the two bracketing frames'
+    // world matrices blended (translation lerp, rotation slerp).
+    function vggtCameraWorldMatrixAt(frame, record = activeCameraRecord()) {
+      if (!record?.extrinsics) return null;
+      const count = record.extrinsics.shape[0];
+      const clamped = Math.max(0, Math.min(frame, count - 1));
+      const i0 = Math.floor(clamped), i1 = Math.min(i0 + 1, count - 1);
+      const alpha = clamped - i0;
+      const a = vggtCameraWorldMatrix(i0, record);
+      if (!a || i1 === i0 || alpha <= 1e-6) return a;
+      const b = vggtCameraWorldMatrix(i1, record);
+      return b ? interpolateMatrix4(a, b, alpha) : a;
+    }
+
+    function applyVggtCamera(frame) {
       const record = activeCameraRecord();
-      const world = vggtCameraWorldMatrix(frameIdx, record);
+      const frameIdx = Math.round(frame);
+      const world = vggtCameraWorldMatrixAt(frame, record);
       if (!world) return;
       world.decompose(camera.position, camera.quaternion, camera.scale);
       camera.updateMatrixWorld(true);
@@ -3070,7 +3085,7 @@
 
     function updateAudioSpatialization() {
       const frameIdx = currentFrameIndex();
-      const visualObjPos = objectPositionAtFrame(frameIdx);
+      const visualObjPos = objectPositionAtFrame(currentFrameFloat());   // interpolated, matches the drawn pose
 
       // Visual state is derived exclusively from the selected transformations.
       if (visualObjPos) {
@@ -3154,6 +3169,82 @@
       return frameTransformForTrajectory(availableTrajectories.get(activeTrajectoryMode), frameIdx);
     }
 
+    // ── Sub-frame interpolation ──────────────────────────────────────────────
+    // Rigid trajectories and the recorded camera are keyed by input-video frame,
+    // so sampling them at Math.round(t * fps) plays the scene back at the input
+    // video's frame rate no matter how fast the display runs. The continuous
+    // lookups below interpolate between the two bracketing keyframes
+    // (translation and scale linearly, rotation by slerp), so a 60 Hz display
+    // gets 60 distinct poses per second. Non-rigid deformation stays per frame.
+    const _ipA = new THREE.Matrix4(), _ipB = new THREE.Matrix4(), _ipOut = new THREE.Matrix4();
+    const _ipPa = new THREE.Vector3(), _ipPb = new THREE.Vector3();
+    const _ipQa = new THREE.Quaternion(), _ipQb = new THREE.Quaternion();
+    const _ipSa = new THREE.Vector3(), _ipSb = new THREE.Vector3();
+
+    function matrix4FromNested(rows, out = new THREE.Matrix4()) {
+      return out.set(
+        rows[0][0], rows[0][1], rows[0][2], rows[0][3],
+        rows[1][0], rows[1][1], rows[1][2], rows[1][3],
+        rows[2][0], rows[2][1], rows[2][2], rows[2][3],
+        rows[3][0], rows[3][1], rows[3][2], rows[3][3],
+      );
+    }
+
+    function nestedFromMatrix4(m) {
+      const e = m.elements;   // column-major
+      return [
+        [e[0], e[4], e[8],  e[12]],
+        [e[1], e[5], e[9],  e[13]],
+        [e[2], e[6], e[10], e[14]],
+        [e[3], e[7], e[11], e[15]],
+      ];
+    }
+
+    function interpolateMatrix4(a, b, alpha, out = new THREE.Matrix4()) {
+      a.decompose(_ipPa, _ipQa, _ipSa);
+      b.decompose(_ipPb, _ipQb, _ipSb);
+      _ipPa.lerp(_ipPb, alpha);
+      _ipQa.slerp(_ipQb, alpha);
+      _ipSa.lerp(_ipSb, alpha);
+      return out.compose(_ipPa, _ipQa, _ipSa);
+    }
+
+    // The two keyframes bracketing a fractional frame, and the blend between them.
+    function bracketFrameKeys(frameKeys, frame) {
+      if (!frameKeys.length) return null;
+      if (frame <= frameKeys[0]) return { k0: frameKeys[0], k1: frameKeys[0], alpha: 0 };
+      const last = frameKeys[frameKeys.length - 1];
+      if (frame >= last) return { k0: last, k1: last, alpha: 0 };
+      let lo = 0, hi = frameKeys.length - 1;
+      while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (frameKeys[mid] <= frame) lo = mid + 1;
+        else hi = mid;
+      }
+      const k0 = frameKeys[lo - 1], k1 = frameKeys[lo];
+      return { k0, k1, alpha: k1 > k0 ? (frame - k0) / (k1 - k0) : 0 };
+    }
+
+    function frameTransformForTrajectoryAt(trajectory, frame) {
+      if (!trajectory) return null;
+      if (!Number.isFinite(frame)) return null;
+      if (Number.isInteger(frame)) return frameTransformForTrajectory(trajectory, frame);
+      const bracket = bracketFrameKeys(trajectory.frameKeys, frame);
+      if (!bracket) return null;
+      const a = trajectory.data[String(bracket.k0)];
+      if (bracket.k0 === bracket.k1 || bracket.alpha <= 0) return a;
+      const b = trajectory.data[String(bracket.k1)];
+      if (bracket.alpha >= 1) return b;
+      matrix4FromNested(a, _ipA);
+      matrix4FromNested(b, _ipB);
+      return nestedFromMatrix4(interpolateMatrix4(_ipA, _ipB, bracket.alpha, _ipOut));
+    }
+
+    function currentFrameFloat() {
+      return Math.max(0, Math.min(currentTime * videoFps, numFrames - 1));
+    }
+
+
     function foregroundTrajectory(record) {
       return record.trajectories.get(activeTrajectoryMode)
         || record.trajectories.get(record.fallbackMode)
@@ -3161,8 +3252,8 @@
         || null;
     }
 
-    function objectPositionForTrajectory(trajectory, frameIdx) {
-      return matrixPosition(frameTransformForTrajectory(trajectory, frameIdx));
+    function objectPositionForTrajectory(trajectory, frame) {
+      return matrixPosition(frameTransformForTrajectoryAt(trajectory, frame));
     }
 
     function objectPositionAtFrame(frameIdx) {
@@ -3543,10 +3634,12 @@
     function applyFrame() {
       if (!sceneLoaded) return;
       const frameIdx = currentFrameIndex();
+      const frameT = currentFrameFloat();   // fractional frame: poses interpolate between keyframes
+      noteSceneTimeApplied(currentTime);
       if (infoCameraFrameEl) infoCameraFrameEl.textContent = String(frameIdx);
 
       if (customCameraActive) applyCustomCamera(currentTime);
-      else if (followVggtCamera) applyVggtCamera(frameIdx);
+      else if (followVggtCamera) applyVggtCamera(frameT);
 
       // Deformation first (object-frame splat centres), then the rigid
       // placement below moves each cloud into the world. Isolated: an exception
@@ -3563,7 +3656,7 @@
       // Apply each object's own 4×4 world trajectory to its own splat scene.
       if (hasFg && fgVisible) {
         for (const record of loadedForegroundObjects()) {
-          const mat = frameTransformForTrajectory(foregroundTrajectory(record), frameIdx);
+          const mat = frameTransformForTrajectoryAt(foregroundTrajectory(record), frameT);
           if (!mat) continue;
           // mat[r][c] row-major 4×4 → decompose into pos/quat/scale
           const m = new THREE.Matrix4();
@@ -3592,10 +3685,10 @@
 
       // Update 3D marker to translation column of current transform (→ GL coords)
       if (hasFg && objMarker) {
-        const objectPosition = objectPositionAtFrame(frameIdx);
+        const objectPosition = objectPositionAtFrame(frameT);
         if (objectPosition) objMarker.position.copy(objectPosition);
       }
-      updateTrajectoryMarkers(frameIdx);
+      updateTrajectoryMarkers(frameT);
 
       updateTimeLabel();
     }
@@ -3641,7 +3734,6 @@
           vec4 bgFront = oD < bD ? O : B, bgBack = oD < bD ? B : O;
           if (Fd.a < 1e-4) {
             gl_FragColor = vec4(over(bgFront, bgBack).rgb, 1.0);
-            #include <colorspace_fragment>
             return;
           }
           float fD = Fd.r / Fd.a;
@@ -3656,12 +3748,93 @@
           vec4 lose = fgBeatsO ? over(B, over(F, O)) : over(over(bgFront, bgBack), F);
           gl_FragColor = vec4(mix(lose, win, w).rgb, 1.0);
           // Spark writes linear (working colour space) values into a render target and
-          // sRGB only when drawing to the canvas; convert once here for the screen.
-          #include <colorspace_fragment>
+          // sRGB only when drawing to the canvas. This composite now lands in the
+          // (linear) present target; the conversion for the screen is done by the
+          // present pass (presentMaterial).
         }`,
       depthTest: false, depthWrite: false,
     });
     compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), compositeMaterial));
+
+    // ── Present hold after a time jump ───────────────────────────────────────
+    // Spark sorts its splats asynchronously (GPU depth readback, then a worker)
+    // and draws a moved cloud with the previous sort's order until the new one
+    // lands. During playback the motion per tick is tiny and the stale order is
+    // harmless, but a jump (Reset, a click on the timeline) moves the object
+    // and the followed camera far enough that the stale order draws the object
+    // inside-out for a few ticks. So the composite is rendered into its own
+    // target and the screen is blitted from it: after a jump the Spark passes
+    // keep running (the new pose gets generated and its sort starts) while the
+    // screen keeps the last good frame, until every renderer has either
+    // finished a sort begun after the jump or had nothing to sort.
+    const presentMaterial = new THREE.ShaderMaterial({
+      uniforms: { tSrc: { value: null } },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+      fragmentShader: `
+        precision highp float;
+        uniform sampler2D tSrc;
+        varying vec2 vUv;
+        void main() {
+          gl_FragColor = texture2D(tSrc, vUv);
+          // The composite keeps its linear values in the present target (three.js
+          // only encodes for the canvas); the one linear -> sRGB conversion happens here.
+          #include <colorspace_fragment>
+        }`,
+      depthTest: false, depthWrite: false, transparent: false,
+    });
+    const presentScene = new THREE.Scene();
+    presentScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), presentMaterial));
+
+    const presentHold = { active: false, ticks: 0, maxTicks: 20, startedAtJump: null };
+    const PRESENT_HOLD_JUMP_SECONDS = 0.25;
+    let lastAppliedSceneTime = null;
+    const sortedSparks = [spark, sparkBehind, sparkOccluders];
+    // Count sort starts and completions per renderer by watching Spark's own
+    // `sorting` flag; independent of who drives the sort (Spark or cpuSort).
+    for (const s of sortedSparks) {
+      let flag = s.sorting;
+      s.sortsStarted = 0; s.sortsCompleted = 0;
+      Object.defineProperty(s, 'sorting', {
+        get() { return flag; },
+        set(v) {
+          if (v && !flag) this.sortsStarted += 1;
+          if (!v && flag) this.sortsCompleted += 1;
+          flag = v;
+        },
+      });
+    }
+    function noteSceneTimeApplied(time) {
+      if (lastAppliedSceneTime !== null && Math.abs(time - lastAppliedSceneTime) > PRESENT_HOLD_JUMP_SECONDS) {
+        presentHold.active = true;
+        presentHold.ticks = 0;
+        presentHold.startedAtJump = sortedSparks.map(s => s.sortsStarted);
+      }
+      lastAppliedSceneTime = time;
+    }
+    function clearPresentHold() {
+      presentHold.active = false;
+      lastAppliedSceneTime = null;
+    }
+    // Called after this tick's Spark passes: true while the screen should keep
+    // the previous frame.
+    function presentHoldPending() {
+      if (!presentHold.active) return false;
+      presentHold.ticks += 1;
+      const ready = sortedSparks.every((s, i) => {
+        if (s === spark && cpuSort.active) return true;    // sorted synchronously
+        const sortedSinceJump = s.sortsCompleted > presentHold.startedAtJump[i];
+        const nothingToSort = !s.sorting && !s.sortDirty;
+        return sortedSinceJump || nothingToSort;
+      });
+      if (ready || presentHold.ticks > presentHold.maxTicks) {
+        presentHold.active = false;
+        return false;
+      }
+      return true;
+    }
+
     function compositeTargetType() {
       const floatOk = renderer.capabilities.isWebGL2
         && renderer.extensions.has('EXT_color_buffer_float') && renderer.extensions.has('EXT_float_blend');
@@ -3675,12 +3848,12 @@
         minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter,
         depthBuffer: false, stencilBuffer: false, generateMipmaps: false,
       });
-      compositeTargets = { w, h, B: make(), Bd: make(), O: make(), Od: make(), F: make(), Fd: make() };
+      compositeTargets = { w, h, B: make(), Bd: make(), O: make(), Od: make(), F: make(), Fd: make(), P: make() };
       return compositeTargets;
     }
     function disposeCompositeTargets() {
       if (!compositeTargets) return;
-      for (const key of ['B', 'Bd', 'O', 'Od', 'F', 'Fd']) compositeTargets[key].dispose();
+      for (const key of ['B', 'Bd', 'O', 'Od', 'F', 'Fd', 'P']) compositeTargets[key].dispose();
       compositeTargets = null;
     }
     function compositeTolerance() {
@@ -3703,7 +3876,7 @@
       return depthComposite;
     }
     const compositePrevClearColor = new THREE.Color();
-    function renderCurrentView() {
+    function renderCurrentView({ allowHold = false } = {}) {
       cpuSortFrame();   // every render path, including the scripted renderAt()
       const w = renderer.domElement.width, h = renderer.domElement.height;
       const targets = ensureCompositeTargets(w, h);
@@ -3725,15 +3898,25 @@
       pass(sparkOccluders, sceneOccluders, targets.Od, 1);
       pass(spark, scene, targets.F, 0);
       pass(spark, scene, targets.Fd, 1);
+      // Composite into the present target, unless a time jump is waiting for
+      // its sort: then the target keeps the last good frame.
+      const holding = allowHold && presentHoldPending();
+      if (!holding) {
+        renderer.setRenderTarget(targets.P);
+        renderer.setClearColor(compositePrevClearColor, prevClearAlpha);
+        renderer.clear();
+        const u = compositeMaterial.uniforms;
+        u.tB.value = targets.B.texture; u.tBd.value = targets.Bd.texture;
+        u.tO.value = targets.O.texture; u.tOd.value = targets.Od.texture;
+        u.tF.value = targets.F.texture; u.tFd.value = targets.Fd.texture;
+        u.uTolerance.value = compositeTolerance();
+        renderer.render(compositeScene, compositeCamera);
+      }
       renderer.setRenderTarget(null);
       renderer.setClearColor(compositePrevClearColor, prevClearAlpha);
       renderer.clear();
-      const u = compositeMaterial.uniforms;
-      u.tB.value = targets.B.texture; u.tBd.value = targets.Bd.texture;
-      u.tO.value = targets.O.texture; u.tOd.value = targets.Od.texture;
-      u.tF.value = targets.F.texture; u.tFd.value = targets.Fd.texture;
-      u.uTolerance.value = compositeTolerance();
-      renderer.render(compositeScene, compositeCamera);
+      presentMaterial.uniforms.tSrc.value = targets.P.texture;
+      renderer.render(presentScene, compositeCamera);
       renderer.autoClear = true;
     }
     function renderLoop() {
@@ -3780,7 +3963,7 @@
         updateAudioSourceLabels();
       }
 
-      renderCurrentView();
+      renderCurrentView({ allowHold: true });
 
       // Update render fps display
       if (infoFpsEl) {
@@ -3861,6 +4044,7 @@
       staticAudioCentroidsVisible = true;
       staticAudioClustersVisible = false;
       currentTime = 0;
+      clearPresentHold();
       updatePlayBtns();
       updateCustomCameraControls();
       setLoading(true, 'Loading visual metadata...');
