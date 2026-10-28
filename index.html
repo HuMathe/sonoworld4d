@@ -217,6 +217,7 @@
             padding: 0;
         }
         .teaser-video-container {
+            position: relative;
             width: 100%;
             max-width: 854px;
             margin: 0 auto;
@@ -231,6 +232,30 @@
             display: block;
             vertical-align: top;
         }
+        .teaser-mute-btn {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.6);
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+        @media (hover: hover) {
+            .teaser-mute-btn:hover { background: rgba(0,0,0,0.85); }
+        }
+        .teaser-mute-btn .icon-unmuted { display: none; }
+        .teaser-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
+        .teaser-mute-btn.is-unmuted .icon-muted { display: none; }
+        .teaser-mute-btn.is-unmuted .icon-unmuted { display: block; }
         
         #explore-scenarios h2 {
             margin: 0 !important;
@@ -1005,12 +1030,16 @@
                 <!-- Teaser video -->
                 <section id="teaser" class="teaser-section">
                     <div class="teaser-video-container">
-                        <video class="teaser-video" autoplay loop muted playsinline preload="metadata"><source src="assets/teaser.mp4" type="video/mp4"></video>
+                        <video class="teaser-video" id="teaser-video" autoplay loop muted playsinline preload="metadata"><source src="assets/teaser.mp4" type="video/mp4"></video>
+                        <button class="teaser-mute-btn" id="teaser-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
                     </div>
                 </section>
 
                 <p><i>
-                    <span style="color: #2EC4B6;"><b>TL;DR:</b></span> We generate camera-controlled walkthrough videos and lift them to 3D via feed-forward reconstruction. To enable long-horizon, 3D-consistent generation, we address <em>spatial forgetting</em> with per-frame geometry for information routing and <em>temporal drifting</em> with self-augmented training that teaches the model to correct drift.
+                    <span style="color: #2EC4B6;"><b>TL;DR:</b></span> We propose the first framework to generate an explorable 4D audio-visual scene from a single video, with spatial audio grounded in both moving and static objects, enabling real-time free-viewpoint 4D audio-visual rendering.
                 </i></p>
 
                 <!-- <section id="news">
@@ -1285,10 +1314,10 @@
         <h3>BibTeX</h3>
         <div class="contributors-grid" style="grid-template-columns: 1fr;">
             <div class="contributors-card" style="max-width: 100%; overflow-x: auto;">
-<pre style="white-space: pre-wrap; word-break: break-word; margin: 0;">@article{shen2026lyra,
-  title={Lyra 2.0: Explorable generative 3d worlds},
-  author={Shen, Tianchang and Bahmani, Sherwin and He, Kai and Srinivasan, Sangeetha Grama and Cao, Tianshi and Ren, Jiawei and Li, Ruilong and Wang, Zian and Sharp, Nicholas and Gojcic, Zan and others},
-  journal={arXiv preprint arXiv:2604.13036},
+<pre style="white-space: pre-wrap; word-break: break-word; margin: 0;">@article{jin2026sonoworld4d,
+  title={SonoWorld4D: From One Video to a 4D Audio-Visual Scene via Diffusion Synchronization},
+  author={Jin, Derong and Chen, Xiyi and Lin, Ming C. and Gao, Ruohan},
+  journal={arXiv preprint},
   year={2026}
 }</pre>
             </div>
@@ -1806,6 +1835,27 @@
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupGuiScenesHover();
     else window.addEventListener('DOMContentLoaded', setupGuiScenesHover);
 
+    // Global audio control: at most one video is unmuted at a time.
+    // Every mute button (teaser + each results row) is registered here; unmuting one mutes all others.
+    const muteButtons = [];
+    function setMuteState(btn, video, muted) {
+        video.muted = muted;
+        btn.classList.toggle('is-unmuted', !muted);
+        btn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+        btn.title = muted ? 'Unmute' : 'Mute';
+    }
+    function registerMuteButton(btn, video) {
+        muteButtons.push({ btn, video });
+        btn.addEventListener('click', () => {
+            const unmute = video.muted;
+            if (unmute) {
+                muteButtons.forEach(o => { if (o.btn !== btn && !o.video.muted) setMuteState(o.btn, o.video, true); });
+            }
+            setMuteState(btn, video, !unmute);
+            if (unmute && video.paused) video.play().catch(() => {});
+        });
+    }
+
     // Results rows: hovering a pair plays input + ours in sync; ours is muted until its button is clicked.
     function setupResultPairs() {
         document.querySelectorAll('.result-pair').forEach(pair => {
@@ -1845,20 +1895,23 @@
             }
 
             if (muteBtn && oursVideo) {
-                muteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    oursVideo.muted = !oursVideo.muted;
-                    const unmuted = !oursVideo.muted;
-                    muteBtn.classList.toggle('is-unmuted', unmuted);
-                    muteBtn.setAttribute('aria-label', unmuted ? 'Mute' : 'Unmute');
-                    muteBtn.title = unmuted ? 'Mute' : 'Unmute';
-                    if (unmuted && oursVideo.paused) oursVideo.play().catch(() => {});
-                });
+                registerMuteButton(muteBtn, oursVideo);
+                muteBtn.addEventListener('click', (e) => { e.stopPropagation(); });
             }
         });
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupResultPairs();
     else window.addEventListener('DOMContentLoaded', setupResultPairs);
+
+    // Teaser: autoplays muted; the button toggles its audio.
+    function setupTeaserMute() {
+        const video = document.getElementById('teaser-video');
+        const btn = document.getElementById('teaser-mute-btn');
+        if (!video || !btn) return;
+        registerMuteButton(btn, video);
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupTeaserMute();
+    else window.addEventListener('DOMContentLoaded', setupTeaserMute);
 
 </script>
 </body>
