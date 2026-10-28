@@ -980,6 +980,39 @@
         .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
         .result-mute-btn.is-unmuted .icon-muted { display: none; }
         .result-mute-btn.is-unmuted .icon-unmuted { display: block; }
+        .results-group-title {
+            text-align: center;
+            font-size: 1.7em;
+            font-weight: 700;
+            margin: 56px 0 4px 0;
+            letter-spacing: 0.3px;
+        }
+        .results-group-title svg.chevron { vertical-align: middle; margin-left: 6px; transition: transform 0.25s ease; }
+        details.results-group > summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+        }
+        details.results-group > summary::-webkit-details-marker { display: none; }
+        details.results-group[open] > summary svg.chevron { transform: rotate(180deg); }
+        @media (hover: hover) {
+            details.results-group > summary:hover { color: var(--accent); }
+        }
+        .ablation-scene-name {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.05em;
+            max-width: none;
+            margin: 8px auto -12px auto;
+        }
+        .ablation-note { margin-top: 8px; font-style: italic; }
+        /* two square inputs sharing one grid slot (two-people ablation) */
+        .result-input-duo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-self: center;
+        }
         .results-subtitle {
             text-align: center;
             font-size: 1.4em;
@@ -1318,6 +1351,133 @@
                 </div>
 
             </div>
+
+            <details class="results-group" id="ablations">
+                <summary class="results-group-title">
+                    Ablations
+                    <svg class="chevron" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Ours (T2A), which generates each dynamic-source track from text, and Ours (V2A), which generates audio conditioned on the input video. Click the speaker buttons to compare.</p>
+                <div class="results-list" id="results-list-ablation">
+
+                <p class="ablation-scene-name">Plane</p>
+                <div class="result-pair" data-scene="ablation-plane">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/input.jpg"><source src="assets/results/plane/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-plane/ours-t2a.jpg"><source src="assets/results/ablation-plane/ours-t2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (T2A)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-plane/ours-v2a.jpg"><source src="assets/results/ablation-plane/ours-v2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (V2A)</span>
+                    </div>
+                </div>
+                <p class="caption-center ablation-note">* Plane scene at a novel listener pose. Listen for the Doppler shift as the plane passes the input camera and novel listener: V2A overfits to the input viewpoint and fails to adapt the effect to the listener, while T2A alters timbre.</p>
+
+                <p class="ablation-scene-name">Tap dance</p>
+                <div class="result-pair" data-scene="ablation-tap-dance">
+                    <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/input.jpg"><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input video</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-tap-dance/ours-t2a.jpg"><source src="assets/results/ablation-tap-dance/ours-t2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (T2A)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-tap-dance/ours-v2a.jpg"><source src="assets/results/ablation-tap-dance/ours-v2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (V2A)</span>
+                    </div>
+                </div>
+
+                <p class="ablation-scene-name">Two people</p>
+                <div class="result-pair" data-scene="ablation-human-26">
+                    <div class="result-input-duo">
+                        <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-1.jpg"><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (person 1)</span>
+                    </div>
+                        <div class="gui-scene-cell result-cell">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-2.jpg"><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <span class="result-label">Input (person 2)</span>
+                    </div>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-human-26/ours-t2a.jpg"><source src="assets/results/ablation-human-26/ours-t2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (T2A)</span>
+                    </div>
+                    <div class="gui-scene-cell result-cell result-cell-ours">
+                        <video muted playsinline preload="metadata" loop poster="assets/results/ablation-human-26/ours-v2a.jpg"><source src="assets/results/ablation-human-26/ours-v2a.mp4" type="video/mp4"></video>
+                        <div class="gui-scene-play-icon"></div>
+                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
+                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        </button>
+                        <span class="result-label">Ours (V2A)</span>
+                    </div>
+                </div>
+
+                </div>
+            </details>
         </section>
 
         <section id="abstract">
@@ -1947,8 +2107,6 @@
             const videos = Array.from(pair.querySelectorAll('video'));
             if (!videos.length) return;
             videos.forEach(v => { v.loop = true; v.muted = true; });
-            const oursVideo = pair.querySelector('.result-cell-ours video');
-            const muteBtn = pair.querySelector('.result-mute-btn');
 
             const startAll = () => {
                 pair.classList.add('is-playing');
@@ -1979,10 +2137,13 @@
                 });
             }
 
-            if (muteBtn && oursVideo) {
-                registerMuteButton(muteBtn, oursVideo);
-                muteBtn.addEventListener('click', (e) => { e.stopPropagation(); });
-            }
+            pair.querySelectorAll('.result-mute-btn').forEach(btn => {
+                const cell = btn.closest('.gui-scene-cell');
+                const v = cell && cell.querySelector('video');
+                if (!v) return;
+                registerMuteButton(btn, v);
+                btn.addEventListener('click', (e) => { e.stopPropagation(); });
+            });
         });
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupResultPairs();
