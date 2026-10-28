@@ -103,6 +103,30 @@
             box-shadow: 0 0 15px rgba(46, 196, 182, 0.5);
         }
 
+        /* Bottom bar */
+        #bottombar {
+            margin-top: 80px;
+            padding: 18px 16px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            background: #000;
+            font-size: 0.85em;
+            color: rgba(224,224,224,0.75);
+        }
+        .bottombar-row {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .bottombar-links { display: flex; gap: 12px; flex-wrap: wrap; }
+        .bottombar-links a { color: rgba(224,224,224,0.75); text-decoration: none; }
+        @media (hover: hover) {
+            .bottombar-links a:hover { color: var(--accent); }
+        }
+
         /* Spacers */
         ._spacer_8k2eh_74 { height: 80px; }
         .spacer-large { height: 120px; }
@@ -1316,7 +1340,7 @@
 
 <section id="citation">
     <div class="container">
-        <h3>BibTeX</h3>
+        <h3>Citation</h3>
         <div class="contributors-grid" style="grid-template-columns: 1fr;">
             <div class="contributors-card" style="max-width: 100%; overflow-x: auto;">
 <pre style="white-space: pre-wrap; word-break: break-word; margin: 0;">@article{jin2026sonoworld4d,
@@ -1329,6 +1353,15 @@
         </div>
     </div>
 </section>
+
+<div id="bottombar">
+    <div class="bottombar-row">
+        <div class="bottombar-title"><span class="accent-text">SonoWorld4D:</span> From One Video to a 4D Audio-Visual Scene via Diffusion Synchronization</div>
+        <div class="bottombar-links">
+            <a href="https://nv-tlabs.github.io/Project-Lyra/" target="_blank" rel="noopener noreferrer">Template</a>
+        </div>
+    </div>
+</div>
 
 <script src="adaptive-video-loader.js"></script>
 <script defer src="assets/data/galleries.js"></script>
