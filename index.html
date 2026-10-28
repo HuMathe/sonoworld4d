@@ -869,8 +869,15 @@
             opacity: 0;
             transition: opacity 0.25s ease;
         }
-        .result-pair:hover .result-label { opacity: 1; }
-        .result-pair:hover .gui-scene-play-icon { opacity: 0; }
+        .result-pair:hover .result-label,
+        .result-pair.is-playing .result-label { opacity: 1; }
+        .result-pair:hover .gui-scene-play-icon,
+        .result-pair.is-playing .gui-scene-play-icon { opacity: 0; }
+        .hint-tap { display: none; }
+        @media (hover: none) {
+            .hint-hover { display: none; }
+            .hint-tap { display: inline; }
+        }
         .result-mute-btn {
             position: absolute;
             left: 10px;
@@ -889,7 +896,8 @@
             opacity: 0;
             transition: opacity 0.25s ease, background 0.2s ease, border-color 0.2s ease;
         }
-        .result-pair:hover .result-mute-btn { opacity: 1; }
+        .result-pair:hover .result-mute-btn,
+        .result-pair.is-playing .result-mute-btn { opacity: 1; }
         .result-mute-btn:hover { background: rgba(0,0,0,0.8); }
         .result-mute-btn .icon-unmuted { display: none; }
         .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
@@ -979,7 +987,7 @@
                     </a>
                     <a href="https://github.com/HuMathe/sonoworld4D" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/github.svg" alt="GitHub" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
-                        Code
+                        Code (Coming Soon)
                     </a>
                     <!-- <a href="https://huggingface.co/nvidia/Lyra-2.0" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/huggingface.svg" alt="Hugging Face" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
@@ -1018,7 +1026,7 @@
                 <h2>Results</h2>
                 <hr>
             </div>
-            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Hover over a row to play both videos. Left: input monocular video. Right: our novel-view rendering. Click the speaker button on the right video to hear the binaural audio (headphones recommended).</p>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic;"><span class="hint-hover">Hover over a row to play both videos.</span><span class="hint-tap">Tap a row to play or pause its videos.</span> Left: input monocular video. Right: our novel-view rendering. Click the speaker button on the right video to hear the binaural audio (headphones recommended).</p>
 
             <h3 class="results-subtitle">Single sound source</h3>
             <!-- Results: one .result-pair per scene (left: input video, right: ours). Hover a pair to play both. -->
@@ -1026,12 +1034,12 @@
 
                 <div class="result-pair" data-scene="porsche_4">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/porsche_4/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/input.jpg"><source src="assets/results/porsche_4/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1043,12 +1051,12 @@
 
                 <div class="result-pair" data-scene="plane">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/input.jpg"><source src="assets/results/plane/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1060,12 +1068,12 @@
 
                 <div class="result-pair" data-scene="plane_4">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane_4/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane_4/input.jpg"><source src="assets/results/plane_4/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/plane_4/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/plane_4/ours.jpg"><source src="assets/results/plane_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1077,12 +1085,12 @@
 
                 <div class="result-pair" data-scene="van">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/van/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/van/input.jpg"><source src="assets/results/van/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/van/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/van/ours.jpg"><source src="assets/results/van/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1094,12 +1102,12 @@
 
                 <div class="result-pair" data-scene="tap-dance">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/input.jpg"><source src="assets/results/tap-dance/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1111,12 +1119,12 @@
 
                 <div class="result-pair" data-scene="karate">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/karate/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/karate/input.jpg"><source src="assets/results/karate/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/karate/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/karate/ours.jpg"><source src="assets/results/karate/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1128,12 +1136,12 @@
 
                 <div class="result-pair" data-scene="robot_12">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/robot_12/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/input.jpg"><source src="assets/results/robot_12/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/ours.jpg"><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1145,12 +1153,12 @@
 
                 <div class="result-pair" data-scene="bird_singing_3">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/bird_singing_3/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/bird_singing_3/input.jpg"><source src="assets/results/bird_singing_3/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/bird_singing_3/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/bird_singing_3/ours.jpg"><source src="assets/results/bird_singing_3/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1162,12 +1170,12 @@
 
                 <div class="result-pair" data-scene="horse-riding">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/horse-riding/input.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/input.jpg"><source src="assets/results/horse-riding/input.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/ours.jpg"><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1186,17 +1194,17 @@
 
                 <div class="result-pair result-pair-multi" data-scene="car-6">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/input-1.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/input-1.jpg"><source src="assets/results/car-6/input-1.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input (red car)</span>
                     </div>
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/input-2.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/input-2.jpg"><source src="assets/results/car-6/input-2.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input (white car)</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1208,17 +1216,17 @@
 
                 <div class="result-pair result-pair-multi" data-scene="human-26">
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-1.jpg"><source src="assets/results/human-26/input-1.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input (person 1)</span>
                     </div>
                     <div class="gui-scene-cell result-cell">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/input-2.jpg"><source src="assets/results/human-26/input-2.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input (person 2)</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
+                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
                             <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -1803,18 +1811,34 @@
             const oursVideo = pair.querySelector('.result-cell-ours video');
             const muteBtn = pair.querySelector('.result-mute-btn');
 
-            pair.addEventListener('mouseenter', () => {
+            const startAll = () => {
+                pair.classList.add('is-playing');
                 videos.forEach(v => {
                     try { v.currentTime = 0; } catch (_) {}
                     v.play().catch(() => {});
                 });
-            });
-            pair.addEventListener('mouseleave', () => {
+            };
+            const stopAll = () => {
+                pair.classList.remove('is-playing');
                 videos.forEach(v => {
                     v.pause();
                     try { v.currentTime = 0; } catch (_) {}
                 });
-            });
+            };
+            pair._stopAll = stopAll;
+
+            if (window.matchMedia('(hover: hover)').matches) {
+                pair.addEventListener('mouseenter', startAll);
+                pair.addEventListener('mouseleave', stopAll);
+            } else {
+                // Touch devices: tap toggles the row; only one row plays at a time.
+                pair.addEventListener('click', (e) => {
+                    if (e.target.closest('.result-mute-btn')) return;
+                    if (pair.classList.contains('is-playing')) { stopAll(); return; }
+                    document.querySelectorAll('.result-pair.is-playing').forEach(p => p._stopAll && p._stopAll());
+                    startAll();
+                });
+            }
 
             if (muteBtn && oursVideo) {
                 muteBtn.addEventListener('click', (e) => {
