@@ -1229,7 +1229,7 @@
         <section id="explore-scenarios">
             <div class="container-fullwidth">
                 <div style="text-align: center; margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
-                    <a href="#" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
+                    <a href="assets/paper.pdf" class="_button_xe5r4_75" style="display: inline-block; text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <img src="assets/pdf.svg" alt="PDF" style="height: 1em; vertical-align: middle; margin-right: 0.2em;">
                         Paper
                     </a>
@@ -1803,7 +1803,7 @@
                 <hr>
             </div>
             <p>
-                Recent progress in visual scene generation has extended beyond static 3D scenes toward the more challenging problem of generating dynamic 4D scenes from minimal input. However, sound, despite being intrinsically coupled with dynamic objects and events, remains largely unmodeled in prior work. We introduce Video-to-4DAVScene, a new task that turns a video into an explorable, time-varying 4D audio-visual scene, and SonoWorld4D, the first framework for this task. Given a monocular video, our method generates a 360° static background, reconstructs explicit motion trajectories of dynamic, sound-emitting foreground objects, and synthesizes a physically-grounded sound field consistent across multiple sources through dual-space audio diffusion synchronization. The resulting 4D scene supports real-time novel-view visual and spatial audio rendering. Evaluation on real-world dynamic scenes and a user study demonstrates SonoWorld4D generates 4D audio-visual scenes with perceptually realistic, physically grounded spatial audio consistent with scene geometry and visual content.
+                Recent progress in visual scene generation has extended beyond static 3D scenes toward the more challenging problem of generating dynamic 4D scenes from minimal input. However, sound, despite being intrinsically coupled with dynamic objects and events, remains largely unmodeled in prior work. We introduce Video-to-4DAVScene, a new task that turns a video into an explorable, time-varying 4D audio-visual scene, and present the SonoWorld4D framework for this task. Given a monocular video, our method generates a 360&deg; static background, reconstructs explicit motion trajectories of dynamic, sound-emitting foreground objects, and synthesizes a dynamic sound field consistent across multiple sources through dual-space diffusion synchronization. The resulting 4D scene supports real-time novel-view visual and spatial audio rendering. Experiments on real-world dynamic scenes and a user study demonstrate that SonoWorld4D generates 4D audio-visual scenes with perceptually realistic, physically grounded spatial audio consistent with scene geometry and visual content.
             </p>
         </section>
         
@@ -1816,7 +1816,7 @@
             <figure class="method-figure">
                 <img src="assets/sonoworld4d.png" alt="SonoWorld4D overview: from a monocular video to a 4D visual scene and a dynamic spatial sound field">
                 <figcaption>
-                    Given a monocular video, we extract depth maps, camera poses, foreground masks, and VLM-derived audio prompts. For visual scene generation, the framework reconstructs per-object dynamic Gaussians and background Gaussians reconstructed from an outpainted 360&deg; panorama, and aligns them into a common world frame via scale correction and local displacement correction. For dynamic sound field generation, static sources are synthesized via text-to-audio and anchored to the background. Dynamic sources are generated via dual-space diffusion synchronization: at each sampling step, forward rendering (<span class="mcal">&#x211B;</span><sub>i</sub>) maps object-space predictions to camera space, while source separation and inverse rendering (<span class="mcal">&#x1D4AC;</span><sub>i</sub>) map camera-space mixtures back to individual object spaces. The resulting scene enables real-time novel-pose visual and spatial audio rendering.
+                    <b>Overview of SonoWorld4D.</b> Given a monocular video, we extract depth maps, camera poses, foreground masks, and VLM-derived audio prompts. For visual scene generation, the framework reconstructs per-object dynamic Gaussians, lifts an outpainted 360&deg; panorama into background Gaussians, and aligns them into a common world frame via scale correction and local displacement correction. For dynamic sound field generation, static sources are synthesized via text-to-audio and anchored to the background. Dynamic sources are generated via dual-space diffusion synchronization: at each sampling step, forward rendering (<span class="mcal">&#x211B;</span><sub>i</sub>) maps object-space predictions to camera space, while source separation and inverse rendering (<span class="mcal">&#x1D4AC;</span><sub>i</sub>) map camera-space mixtures back to individual object spaces. The resulting scene enables real-time novel-pose visual and spatial audio rendering.
                 </figcaption>
             </figure>
 
