@@ -156,6 +156,9 @@
         }
 
         /* Method figures */
+        /* calligraphic operator symbols in the method caption (\mathcal{R}, \mathcal{Q}) */
+        .mcal { font-family: 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif; font-style: normal; }
+        .method-figure figcaption sub { font-style: italic; font-size: 0.75em; line-height: 0; }
         .method-figure {
             margin: 36px auto 0 auto;
             max-width: 80%;   /* same width as the original template's method figure */
@@ -1160,7 +1163,7 @@
         </a> -->
         <nav class="_links_l9x19_177">
             <ul>
-                <li><a href="demo.html">Viewer</a></li>
+                <!-- <li><a href="demo.html">Viewer</a></li> -->
                 <li><a href="#results">Results</a></li>
                 <li><a href="#abstract">Abstract</a></li>
                 <li><a href="#method">Method</a></li>
@@ -1954,7 +1957,7 @@
             <figure class="method-figure">
                 <img src="assets/sonoworld4d.png" alt="SonoWorld4D overview: from a monocular video to a 4D visual scene and a dynamic spatial sound field">
                 <figcaption>
-                    Given a monocular video, SonoWorld4D first reconstructs a 4D visual scene with a static background and dynamic foreground objects. Based on this aligned visual scene representation, it then generates a dynamic spatial sound field by jointly predicting object-space and camera-space audio through diffusion synchronization. The resulting scene supports real-time interactive exploration, rendering semantically and geometrically synchronized visual and spatial audio streams with moving sound sources.
+                    Given a monocular video, we extract depth maps, camera poses, foreground masks, and VLM-derived audio prompts. For visual scene generation, the framework reconstructs per-object dynamic Gaussians and background Gaussians reconstructed from an outpainted 360&deg; panorama, and aligns them into a common world frame via scale correction and local displacement correction. For dynamic sound field generation, static sources are synthesized via text-to-audio and anchored to the background. Dynamic sources are generated via dual-space diffusion synchronization: at each sampling step, forward rendering (<span class="mcal">&#x211B;</span><sub>i</sub>) maps object-space predictions to camera space, while source separation and inverse rendering (<span class="mcal">&#x1D4AC;</span><sub>i</sub>) map camera-space mixtures back to individual object spaces. The resulting scene enables real-time novel-pose visual and spatial audio rendering.
                 </figcaption>
             </figure>
 
