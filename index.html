@@ -1627,7 +1627,7 @@
                         <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                     </span>
                 </summary>
-                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Sonic4D and OmniAudio at the same novel listener pose. Sonic4D renders its own video and audio; OmniAudio predicts audio from our novel-view rendering. With Sound on, click a video to listen to it.</p>
+                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Sonic4D and OmniAudio at the same novel listener pose. Sonic4D renders its own video and audio; OmniAudio predicts audio from our novel-view rendering. With Sound on, switch methods to compare.</p>
                 <div class="results-list" id="results-list-baselines">
 
                 <p class="ablation-scene-name">Porsche</p>
@@ -1637,24 +1637,18 @@
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/sonic4d.jpg"><source src="assets/results/porsche_4/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/omniaudio.jpg"><source src="assets/results/porsche_4/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-porsche_4" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/porsche_4/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/porsche_4/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/porsche_4/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Plane</p>
@@ -1664,24 +1658,18 @@
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/sonic4d.jpg"><source src="assets/results/plane/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/plane/omniaudio.jpg"><source src="assets/results/plane/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-plane" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/plane/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/plane/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/plane/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Tap dance</p>
@@ -1691,24 +1679,18 @@
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/sonic4d.jpg"><source src="assets/results/tap-dance/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/omniaudio.jpg"><source src="assets/results/tap-dance/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-tap-dance" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/tap-dance/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/tap-dance/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/tap-dance/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Robot</p>
@@ -1718,24 +1700,18 @@
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/ours.jpg"><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/sonic4d.jpg"><source src="assets/results/robot_12/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/omniaudio.jpg"><source src="assets/results/robot_12/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-robot_12" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/robot_12/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/robot_12/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/robot_12/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Horse riding</p>
@@ -1745,24 +1721,18 @@
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-label">Input video</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/ours.jpg"><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/sonic4d.jpg"><source src="assets/results/horse-riding/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/omniaudio.jpg"><source src="assets/results/horse-riding/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-horse-riding" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/horse-riding/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/horse-riding/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/horse-riding/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Two cars</p>
@@ -1779,24 +1749,18 @@
                             <span class="result-label">Input (white car)</span>
                         </div>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/sonic4d.jpg"><source src="assets/results/car-6/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/car-6/omniaudio.jpg"><source src="assets/results/car-6/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-car-6" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/car-6/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/car-6/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/car-6/ours" data-label="Ours">Ours</button>
                 </div>
 
                 <p class="ablation-scene-name">Two people</p>
@@ -1813,24 +1777,18 @@
                             <span class="result-label">Input (person 2)</span>
                         </div>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
+                    <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
                         <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Ours</span>
+                        <span class="result-label track-label">Ours</span>
                     </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/sonic4d.jpg"><source src="assets/results/human-26/sonic4d.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">Sonic4D</span>
-                    </div>
-                    <div class="gui-scene-cell result-cell result-cell-ours">
-                        <video muted playsinline preload="metadata" loop poster="assets/results/human-26/omniaudio.jpg"><source src="assets/results/human-26/omniaudio.mp4" type="video/mp4"></video>
-                        <div class="gui-scene-play-icon"></div>
-                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
-                        <span class="result-label">OmniAudio</span>
-                    </div>
+                </div>
+                <div class="track-tabs" data-for="baseline-human-26" role="tablist" aria-label="Method">
+                    <span class="track-tabs-hint">Method:</span>
+                    <button class="track-tab" type="button" data-src="assets/results/human-26/sonic4d" data-label="Sonic4D">Sonic4D</button>
+                    <button class="track-tab" type="button" data-src="assets/results/human-26/omniaudio" data-label="OmniAudio">OmniAudio</button>
+                    <button class="track-tab active" type="button" data-src="assets/results/human-26/ours" data-label="Ours">Ours</button>
                 </div>
 
                 </div>
