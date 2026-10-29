@@ -76,6 +76,7 @@
         nav._links_l9x19_177 ul {
             list-style: none;
             display: flex;
+            align-items: center;   /* text links and the Sound pill share one centre line */
             gap: 30px;
             margin: 0;
             padding: 0;
@@ -341,30 +342,32 @@
             display: block;
             vertical-align: top;
         }
-        .teaser-mute-btn {
-            position: absolute;
-            right: 12px;
-            bottom: 12px;
-            width: 40px;
-            height: 40px;
-            display: flex;
+        /* Global sound switch in the header nav */
+        nav._links_l9x19_177 li.nav-sound button {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.6);
-            background: rgba(0,0,0,0.6);
-            color: #fff;
+            gap: 6px;
+            padding: 3px 10px;
+            line-height: 1.2;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: transparent;
+            color: var(--text-color);
+            font: inherit;
+            font-size: 0.95em;
+            font-weight: 500;
             cursor: pointer;
-            padding: 0;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
+        nav._links_l9x19_177 li.nav-sound button .icon-unmuted { display: none; }
+        nav._links_l9x19_177 li.nav-sound button.is-on { color: var(--accent); border-color: var(--accent); }
+        nav._links_l9x19_177 li.nav-sound button.is-on .icon-muted { display: none; }
+        nav._links_l9x19_177 li.nav-sound button.is-on .icon-unmuted { display: block; }
         @media (hover: hover) {
-            .teaser-mute-btn:hover { background: rgba(0,0,0,0.85); }
+            nav._links_l9x19_177 li.nav-sound button:hover { color: #fff; border-color: rgba(255,255,255,0.7); }
+            nav._links_l9x19_177 li.nav-sound button.is-on:hover { color: var(--accent); border-color: var(--accent); background: rgba(46,196,182,0.12); }
         }
-        .teaser-mute-btn .icon-unmuted { display: none; }
-        .teaser-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
-        .teaser-mute-btn.is-unmuted .icon-muted { display: none; }
-        .teaser-mute-btn.is-unmuted .icon-unmuted { display: block; }
         
         #explore-scenarios h2 {
             margin: 0 !important;
@@ -727,6 +730,8 @@
             nav._links_l9x19_177 ul { gap: 14px; }
             .nav-label-long { display: none; }
             .nav-label-short { display: inline; }
+            .nav-sound-label { display: none; }
+            nav._links_l9x19_177 li.nav-sound button { padding: 4px 7px; }
         }
 
         @media (max-width: 350px) {
@@ -1023,33 +1028,28 @@
             .hint-hover { display: none; }
             .hint-tap { display: inline; }
         }
-        .result-mute-btn {
+        /* Audio is controlled by the global "Sound" switch in the header. The badge
+           only marks which video is currently audible (one at a time). */
+        .result-audio-badge {
             position: absolute;
             left: 10px;
             bottom: 8px;
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.5);
-            background: rgba(0,0,0,0.55);
-            color: #fff;
-            cursor: pointer;
-            padding: 0;
+            border: 1px solid var(--accent);
+            background: rgba(0,0,0,0.6);
+            color: var(--accent);
+            pointer-events: none;
             opacity: 0;
-            transition: opacity 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+            transition: opacity 0.25s ease;
         }
-        .result-pair.is-playing .result-mute-btn { opacity: 1; }
-        @media (hover: hover) {
-            .result-pair:hover .result-mute-btn { opacity: 1; }
-            .result-mute-btn:hover { background: rgba(0,0,0,0.8); }
-        }
-        .result-mute-btn .icon-unmuted { display: none; }
-        .result-mute-btn.is-unmuted { border-color: var(--accent); color: var(--accent); }
-        .result-mute-btn.is-unmuted .icon-muted { display: none; }
-        .result-mute-btn.is-unmuted .icon-unmuted { display: block; }
+        .gui-scene-cell.is-audible .result-audio-badge { opacity: 1; }
+        /* in rows with several audible candidates (baselines), clicking a video gives it the sound */
+        .result-pair[data-multi-audio] .result-cell-ours { cursor: pointer; }
         /* Collapsible group: summary rendered as a pill button + hint line */
         details.results-group > summary.results-group-summary {
             list-style: none;
@@ -1176,6 +1176,13 @@
                         <li><a href="https://humathe.github.io/sonoworld/" target="_blank" rel="noopener noreferrer">SonoWorld</a></li>
                     </ul>
                 </li>
+                <li class="nav-sound">
+                    <button id="sound-toggle" type="button" aria-pressed="false" title="Turn sound on">
+                        <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                        <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                        <span class="nav-sound-label">Sound off</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </div>
@@ -1232,10 +1239,6 @@
                 <section id="teaser" class="teaser-section">
                     <div class="teaser-video-container">
                         <video class="teaser-video" id="teaser-video" autoplay loop muted playsinline preload="metadata"><source src="assets/teaser.mp4" type="video/mp4"></video>
-                        <button class="teaser-mute-btn" id="teaser-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
                     </div>
                 </section>
 
@@ -1260,7 +1263,7 @@
                 <h2>Results</h2>
                 <hr>
             </div>
-            <p class="caption-center" style="margin-top: 10px; font-style: italic;"><span class="hint-hover">Hover over a row to play both videos.</span><span class="hint-tap">Tap a row to play or pause its videos.</span> Left: input monocular video. Right: our novel-view rendering. Click the speaker button on the right video to hear the binaural audio (headphones recommended).</p>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic;"><span class="hint-hover">Hover over a row to play both videos.</span><span class="hint-tap">Tap a row to play or pause its videos.</span> Left: input monocular video. Right: our novel-view rendering. Turn on <b>Sound</b> in the top bar to hear the binaural audio of the right video (headphones recommended).</p>
 
             <h3 class="results-subtitle">Single sound source</h3>
             <!-- Results: one .result-pair per scene (left: input video, right: ours). Hover a pair to play both. -->
@@ -1275,10 +1278,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1292,10 +1292,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1309,10 +1306,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane_4/ours.jpg"><source src="assets/results/plane_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1326,10 +1320,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/van/ours.jpg"><source src="assets/results/van/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1343,10 +1334,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1360,10 +1348,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/karate/ours.jpg"><source src="assets/results/karate/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1377,10 +1362,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/ours.jpg"><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1394,10 +1376,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/bird_singing_3/ours.jpg"><source src="assets/results/bird_singing_3/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1411,10 +1390,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/ours.jpg"><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1440,10 +1416,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1462,10 +1435,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours (novel view)</span>
                     </div>
                 </div>
@@ -1479,7 +1449,7 @@
                         <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                     </span>
                 </summary>
-                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Ours (T2A), which generates each dynamic-source track from text, and Ours (V2A), which generates audio conditioned on the input video. Click the speaker buttons to compare.</p>
+                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Ours (T2A), which generates each dynamic-source track from text, and Ours (V2A), which generates audio conditioned on the input video. With Sound on, switch versions to compare.</p>
                 <div class="results-list" id="results-list-ablation">
 
                 <p class="ablation-scene-name">Plane</p>
@@ -1492,10 +1462,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Ours</span>
                     </div>
                 </div>
@@ -1517,10 +1484,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Ours</span>
                     </div>
                 </div>
@@ -1548,10 +1512,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Ours</span>
                     </div>
                 </div>
@@ -1585,10 +1546,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Overall</span>
                     </div>
                 </div>
@@ -1610,10 +1568,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Overall</span>
                     </div>
                 </div>
@@ -1640,10 +1595,7 @@
                     <div class="gui-scene-cell result-cell result-cell-ours track-cell">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label track-label">Overall</span>
                     </div>
                 </div>
@@ -1665,7 +1617,7 @@
                         <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                     </span>
                 </summary>
-                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Sonic4D and OmniAudio at the same novel listener pose. Sonic4D renders its own video and audio; OmniAudio predicts audio from our novel-view rendering. Click the speaker buttons to compare.</p>
+                <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Sonic4D and OmniAudio at the same novel listener pose. Sonic4D renders its own video and audio; OmniAudio predicts audio from our novel-view rendering. With Sound on, click a video to listen to it.</p>
                 <div class="results-list" id="results-list-baselines">
 
                 <p class="ablation-scene-name">Porsche</p>
@@ -1678,28 +1630,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/ours.jpg"><source src="assets/results/porsche_4/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/sonic4d.jpg"><source src="assets/results/porsche_4/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/porsche_4/omniaudio.jpg"><source src="assets/results/porsche_4/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1714,28 +1657,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/ours.jpg"><source src="assets/results/plane/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/sonic4d.jpg"><source src="assets/results/plane/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/plane/omniaudio.jpg"><source src="assets/results/plane/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1750,28 +1684,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/ours.jpg"><source src="assets/results/tap-dance/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/sonic4d.jpg"><source src="assets/results/tap-dance/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/tap-dance/omniaudio.jpg"><source src="assets/results/tap-dance/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1786,28 +1711,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/ours.jpg"><source src="assets/results/robot_12/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/sonic4d.jpg"><source src="assets/results/robot_12/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/robot_12/omniaudio.jpg"><source src="assets/results/robot_12/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1822,28 +1738,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/ours.jpg"><source src="assets/results/horse-riding/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/sonic4d.jpg"><source src="assets/results/horse-riding/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/horse-riding/omniaudio.jpg"><source src="assets/results/horse-riding/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1865,28 +1772,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/ours.jpg"><source src="assets/results/car-6/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/sonic4d.jpg"><source src="assets/results/car-6/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/car-6/omniaudio.jpg"><source src="assets/results/car-6/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -1908,28 +1806,19 @@
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/ours.jpg"><source src="assets/results/human-26/ours.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Ours</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/sonic4d.jpg"><source src="assets/results/human-26/sonic4d.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">Sonic4D</span>
                     </div>
                     <div class="gui-scene-cell result-cell result-cell-ours">
                         <video muted playsinline preload="metadata" loop poster="assets/results/human-26/omniaudio.jpg"><source src="assets/results/human-26/omniaudio.mp4" type="video/mp4"></video>
                         <div class="gui-scene-play-icon"></div>
-                        <button class="result-mute-btn" type="button" aria-label="Unmute" title="Unmute">
-                            <svg class="icon-muted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-                            <svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-                        </button>
+                        <span class="result-audio-badge" aria-hidden="true"><svg class="icon-unmuted" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
                         <span class="result-label">OmniAudio</span>
                     </div>
                 </div>
@@ -2538,33 +2427,53 @@
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupGuiScenesHover();
     else window.addEventListener('DOMContentLoaded', setupGuiScenesHover);
 
-    // Global audio control: at most one video is unmuted at a time.
-    // Every mute button (teaser + each results row) is registered here; unmuting one mutes all others.
-    const muteButtons = [];
-    function setMuteState(btn, video, muted) {
-        video.muted = muted;
-        btn.classList.toggle('is-unmuted', !muted);
-        btn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
-        btn.title = muted ? 'Unmute' : 'Mute';
+    // Global sound switch (header). Audio defaults to off so the teaser can autoplay.
+    // With sound on, exactly one video is audible: the audible cell of the results row
+    // that is playing, otherwise the teaser while it is in view.
+    let soundOn = false;
+    const audioVideos = new Set();
+    let activePair = null;
+    let teaserVideo = null;
+    let teaserInView = false;
+    function applyAudio() {
+        audioVideos.forEach(v => { v.muted = true; });
+        document.querySelectorAll('.gui-scene-cell.is-audible').forEach(c => c.classList.remove('is-audible'));
+        if (!soundOn) return;
+        if (activePair) {
+            const cell = activePair._audioCell;
+            const v = cell && cell.querySelector('video');
+            if (v) { v.muted = false; cell.classList.add('is-audible'); }
+        } else if (teaserVideo && teaserInView) {
+            teaserVideo.muted = false;
+        }
     }
-    function registerMuteButton(btn, video) {
-        muteButtons.push({ btn, video });
+    function setupSoundToggle() {
+        const btn = document.getElementById('sound-toggle');
+        if (!btn) return;
+        const label = btn.querySelector('.nav-sound-label');
         btn.addEventListener('click', () => {
-            const unmute = video.muted;
-            if (unmute) {
-                muteButtons.forEach(o => { if (o.btn !== btn && !o.video.muted) setMuteState(o.btn, o.video, true); });
-            }
-            setMuteState(btn, video, !unmute);
-            if (unmute && video.paused) video.play().catch(() => {});
+            soundOn = !soundOn;
+            btn.classList.toggle('is-on', soundOn);
+            btn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+            btn.title = soundOn ? 'Turn sound off' : 'Turn sound on';
+            if (label) label.textContent = soundOn ? 'Sound on' : 'Sound off';
+            applyAudio();
         });
     }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupSoundToggle();
+    else window.addEventListener('DOMContentLoaded', setupSoundToggle);
 
-    // Results rows: hovering a pair plays input + ours in sync; ours is muted until its button is clicked.
+    // Results rows: hovering a pair plays input + ours in sync. The row's audible cell
+    // (first "ours" cell by default) gets the sound when the global switch is on.
     function setupResultPairs() {
         document.querySelectorAll('.result-pair').forEach(pair => {
             const videos = Array.from(pair.querySelectorAll('video'));
             if (!videos.length) return;
             videos.forEach(v => { v.loop = true; v.muted = true; });
+            const audioCells = Array.from(pair.querySelectorAll('.result-cell-ours'));
+            audioCells.forEach(c => { const v = c.querySelector('video'); if (v) audioVideos.add(v); });
+            pair._audioCell = audioCells[0] || null;
+            if (audioCells.length > 1) pair.setAttribute('data-multi-audio', '');
 
             const startAll = () => {
                 pair.classList.add('is-playing');
@@ -2572,6 +2481,8 @@
                     try { v.currentTime = 0; } catch (_) {}
                     v.play().catch(() => {});
                 });
+                activePair = pair;
+                applyAudio();
             };
             const stopAll = () => {
                 pair.classList.remove('is-playing');
@@ -2579,29 +2490,37 @@
                     v.pause();
                     try { v.currentTime = 0; } catch (_) {}
                 });
+                if (activePair === pair) { activePair = null; applyAudio(); }
             };
             pair._stopAll = stopAll;
 
             if (window.matchMedia('(hover: hover)').matches) {
                 pair.addEventListener('mouseenter', startAll);
                 pair.addEventListener('mouseleave', stopAll);
+                if (audioCells.length > 1) {
+                    audioCells.forEach(cell => cell.addEventListener('click', () => {
+                        pair._audioCell = cell;
+                        applyAudio();
+                    }));
+                }
             } else {
                 // Touch devices: tap toggles the row; only one row plays at a time.
+                // In rows with several audible videos, tapping another one moves the sound to it.
                 pair.addEventListener('click', (e) => {
-                    if (e.target.closest('.result-mute-btn')) return;
-                    if (pair.classList.contains('is-playing')) { stopAll(); return; }
+                    if (pair.classList.contains('is-playing')) {
+                        const cell = e.target.closest('.result-cell-ours');
+                        if (audioCells.length > 1 && cell && cell !== pair._audioCell) {
+                            pair._audioCell = cell;
+                            applyAudio();
+                            return;
+                        }
+                        stopAll();
+                        return;
+                    }
                     document.querySelectorAll('.result-pair.is-playing').forEach(p => p._stopAll && p._stopAll());
                     startAll();
                 });
             }
-
-            pair.querySelectorAll('.result-mute-btn').forEach(btn => {
-                const cell = btn.closest('.gui-scene-cell');
-                const v = cell && cell.querySelector('video');
-                if (!v) return;
-                registerMuteButton(btn, v);
-                btn.addEventListener('click', (e) => { e.stopPropagation(); });
-            });
         });
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupResultPairs();
@@ -2634,6 +2553,7 @@
                     const resume = () => {
                         try { video.currentTime = t; } catch (_) {}
                         if (wasPlaying) video.play().catch(() => {});
+                        applyAudio();
                     };
                     video.addEventListener('loadedmetadata', resume, { once: true });
                 });
@@ -2643,15 +2563,24 @@
     if (document.readyState === 'complete' || document.readyState === 'interactive') setupTrackTabs();
     else window.addEventListener('DOMContentLoaded', setupTrackTabs);
 
-    // Teaser: autoplays muted; the button toggles its audio.
-    function setupTeaserMute() {
+    // Teaser: autoplays muted; it is audible while in view when the sound switch is on
+    // and no results row is playing.
+    function setupTeaserAudio() {
         const video = document.getElementById('teaser-video');
-        const btn = document.getElementById('teaser-mute-btn');
-        if (!video || !btn) return;
-        registerMuteButton(btn, video);
+        if (!video) return;
+        teaserVideo = video;
+        audioVideos.add(video);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+                entries.forEach(entry => { teaserInView = entry.isIntersecting && entry.intersectionRatio >= 0.5; });
+                applyAudio();
+            }, { threshold: [0, 0.5, 1] }).observe(video);
+        } else {
+            teaserInView = true;
+        }
     }
-    if (document.readyState === 'complete' || document.readyState === 'interactive') setupTeaserMute();
-    else window.addEventListener('DOMContentLoaded', setupTeaserMute);
+    if (document.readyState === 'complete' || document.readyState === 'interactive') setupTeaserAudio();
+    else window.addEventListener('DOMContentLoaded', setupTeaserAudio);
 
     // Header "More Research" dropdown: hover on desktop (CSS), tap to toggle on touch; click outside closes.
     function setupNavDropdown() {
