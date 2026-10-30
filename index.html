@@ -1070,42 +1070,48 @@
         .result-audio-badge.is-on .icon-unmuted, .teaser-audio-badge.is-on .icon-unmuted { display: block; }
         /* in rows with several audible candidates (baselines), clicking a video gives it the sound */
         .result-pair[data-multi-audio] .result-cell-ours { cursor: pointer; }
-        /* Collapsible group: summary rendered as a pill button + hint line */
+        /* Collapsible groups (Ablations / Separate Sound Tracks / Baseline Comparisons):
+           same look as the audio-space mapping demo's header — a full-width row between
+           two hairlines, title left, short note right, plus/minus toggle at the edge. */
+        details.results-group {
+            width: 100%;
+            margin: 22px auto 12px;
+        }
+        /* header row and expanded content both span the section width (same as the result videos) */
         details.results-group > summary.results-group-summary {
+            box-sizing: border-box;
+            width: 100%;
+            margin: 0;
+            border-top: 1px solid #363b40;
+            border-bottom: 1px solid #363b40;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px 22px;
+            min-height: 74px;
+            padding: 20px 34px 20px 0;
+            position: relative;
+            color: #e0e0e0;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.4;
             list-style: none;
             cursor: pointer;
             user-select: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin: 56px 0 4px 0;
         }
         details.results-group > summary::-webkit-details-marker { display: none; }
-        .results-group-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 30px;
-            border-radius: 999px;
-            border: 1.5px solid var(--accent);
-            background: rgba(46, 196, 182, 0.10);
-            color: var(--accent);
-            font-size: 1.35em;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            box-shadow: 0 0 18px rgba(46, 196, 182, 0.18);
-            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-        }
-        .results-group-pill svg.chevron { transition: transform 0.25s ease; }
-        details.results-group[open] .results-group-pill svg.chevron { transform: rotate(180deg); }
-        @media (hover: hover) {
-            details.results-group > summary:hover .results-group-pill {
-                background: var(--accent);
-                color: #000;
-                box-shadow: 0 0 24px rgba(46, 196, 182, 0.45);
-                transform: translateY(-1px);
-            }
+        details.results-group > summary:hover { color: #fff; }
+        details.results-group > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 3px; }
+        .results-group-note { margin-left: auto; color: #a9acb0; font-size: 12px; font-weight: 400; }
+        .results-group-icon { position: absolute; right: 4px; top: calc(50% - 8px); width: 16px; height: 16px; color: var(--accent); }
+        .results-group-icon::before, .results-group-icon::after { content: ''; position: absolute; background: currentColor; border-radius: 1px; }
+        .results-group-icon::before { width: 14px; height: 2px; top: 7px; left: 1px; }
+        .results-group-icon::after { width: 2px; height: 14px; top: 1px; left: 7px; }
+        details.results-group[open] .results-group-icon::after { display: none; }
+        details.results-group > .caption-center:first-of-type { margin-top: 26px !important; }
+        details.results-group > .results-list:last-child { padding-bottom: 26px; }
+        @media (max-width: 760px) {
+            .results-group-note { flex-basis: 100%; margin-left: 0; }
         }
         .ablation-scene-name {
             display: none;   /* scene names hidden; markup kept for reference */
@@ -1468,12 +1474,7 @@
             </div>
 
             <details class="results-group" id="ablations">
-                <summary class="results-group-summary">
-                    <span class="results-group-pill">
-                        Ablations
-                        <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </span>
-                </summary>
+                <summary class="results-group-summary"><span>Ablations</span><span class="results-group-note">Ours (T2A) / Ours (V2A) / Ours</span><span class="results-group-icon" aria-hidden="true"></span></summary>
                 <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Ours (T2A), which generates each dynamic-source track from text, and Ours (V2A), which generates audio conditioned on the input video. With Sound on, switch versions to compare.</p>
                 <div class="results-list" id="results-list-ablation">
 
@@ -1552,12 +1553,7 @@
             </details>
 
             <details class="results-group" id="tracks">
-                <summary class="results-group-summary">
-                    <span class="results-group-pill">
-                        Separate Sound Tracks
-                        <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </span>
-                </summary>
+                <summary class="results-group-summary"><span>Separate Sound Tracks</span><span class="results-group-note">Per-source tracks</span><span class="results-group-icon" aria-hidden="true"></span></summary>
                 <p class="caption-center" style="margin-top: 10px; font-style: italic;">Each sound source is generated and spatialized as its own track. Pick a track to hear it alone at the novel listener pose, or the overall mix.</p>
                 <div class="results-list" id="results-list-tracks">
 
@@ -1636,12 +1632,7 @@
             </details>
 
             <details class="results-group" id="baselines">
-                <summary class="results-group-summary">
-                    <span class="results-group-pill">
-                        Baseline Comparisons
-                        <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                    </span>
-                </summary>
+                <summary class="results-group-summary"><span>Baseline Comparisons</span><span class="results-group-note">Ours / Sonic4D / OmniAudio</span><span class="results-group-icon" aria-hidden="true"></span></summary>
                 <p class="caption-center" style="margin-top: 10px; font-style: italic;">Comparison with Sonic4D and OmniAudio at the same novel listener pose. Sonic4D renders its own video and audio; OmniAudio predicts audio from our novel-view rendering. With Sound on, switch methods to compare.</p>
                 <div class="results-list" id="results-list-baselines">
 
