@@ -1,0 +1,257 @@
+{
+  "source_host": "nexusvulcan.umiacs.umd.edu",
+  "source_scene": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane",
+  "audio_run": "sw4d_audio_v6_10s",
+  "metadata_rewrites": [],
+  "study_match": {
+    "study_video": "/fs/nexus-projects/Audio23/4d/sonoworld4d_results_unzipped/results/plane/ours.mp4",
+    "archived_render_video": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20_stereo_clipped.mp4",
+    "sha256": "dc6fc747bdbad358ab58fe3046e3e48f4e5a964c79f5ed1c908cda77ac142868",
+    "render_metadata": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20_render-metadata.json",
+    "render_metadata_sha256": "3666c4b9fe743e0419c27ebb8c94cdc20859397a1e831558b2d91af3b7431136"
+  },
+  "viewer_config": "viewer-config.json",
+  "files": [
+    {
+      "path": "3d/background/background_v1/calib_geocalib/w2c_ref_pano.npy",
+      "bytes": 192,
+      "sha256": "ad171f531b7e59f71020a25ce09a3b6d48cc2b37bf3eb3843af2f45f53ba7d64"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_layers/layers_meta.json",
+      "bytes": 3486,
+      "sha256": "deaecb98cb9ff7d02f08cc58de948c124281ee3c158f4cf17d0039d163993a66"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_occluders.ply",
+      "bytes": 54025634,
+      "sha256": "15d3bd88fdb7d805140ad9fc61dafc79db1dd049178d21f09d96d85febf96e0a"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_sky.ply",
+      "bytes": 53495090,
+      "sha256": "ea72bf5e3cda9df469cf196c7ca76df2f7aa0cac62bdda18705a321dfbd6eca2"
+    },
+    {
+      "path": "3d/background/background_v1/point_render/meta.json",
+      "bytes": 793,
+      "sha256": "2c529bdfcd93f50b8ba7a1b068034612a3755be6550eb60f1f37e9ee30915577"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/align_marble/scale.json",
+      "bytes": 125,
+      "sha256": "ec2c7e926c8ab7cef4c94ed700b278b9552f5910677f5c681204d2b040fc54fa"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/keyframe_pose/0/transformations_keyframes.json",
+      "bytes": 5658,
+      "sha256": "0c9f99b56ba66ac69a5875eddc8d1118da01485c0a7ea85786f8c2ee2af8e2a8"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/keyframe_pose/0/transformations_smoothed.json",
+      "bytes": 18696,
+      "sha256": "77e66e2e9914f05c62d67784b1cf2a4c3bd8c7f5f9f0840bab117e3af80eaa1e"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/mvsam3d/0/gaussians_fg_ref_idx.ply",
+      "bytes": 6738282,
+      "sha256": "41c976c55f217f09d68877d20b486c971d6d26c76e161f44f50f0a628d116047"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_adaptive_smoothed.json",
+      "bytes": 108160,
+      "sha256": "1dc0ff1b46c17f676a5894fa3a19d736b73741acd5937c4af90bcba1cbbf377b"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_aligned.json",
+      "bytes": 108212,
+      "sha256": "a3f7ff106fe58b7202f1b6289f1b7d9e1a7b42f88c5ef3bf2dcbd112c6d5427c"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_aligned_raw.json",
+      "bytes": 108160,
+      "sha256": "1dc0ff1b46c17f676a5894fa3a19d736b73741acd5937c4af90bcba1cbbf377b"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_extrapolation_smoothed.json",
+      "bytes": 108212,
+      "sha256": "a3f7ff106fe58b7202f1b6289f1b7d9e1a7b42f88c5ef3bf2dcbd112c6d5427c"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_linear.json",
+      "bytes": 141167,
+      "sha256": "e006a39188af1a40cc636b5c5db0d85eac905f587d1ecf74f50f46d78bdd8cf7"
+    },
+    {
+      "path": "slam/vggt_omega/extrinsics.npy",
+      "bytes": 32128,
+      "sha256": "c719fb5da7b7a64d54b54c1bd56893e26a3ed86ee2cd5b7bfead0d5588f7efc7"
+    },
+    {
+      "path": "slam/vggt_omega/intrinsics.npy",
+      "bytes": 9128,
+      "sha256": "417b89448d13631d8f4dcff5c48b8ea46a61c220e8541fc5bf6318c89da88df9"
+    },
+    {
+      "path": "slam/vggt_omega/meta.json",
+      "bytes": 236,
+      "sha256": "91441c04cbbbd92857018c9fadc0f68a4a9060f4abf35e87f83badf0d5a1b05a"
+    },
+    {
+      "path": "audio/geometry/dyn_amb/geometry-meta.json",
+      "bytes": 138415,
+      "sha256": "2795c69e4dcfb02d2d0d65f085584bddc64c4bb6ceacec4f14633a330dc0ab35"
+    },
+    {
+      "path": "audio/geometry/static_grounding/geometry-meta.json",
+      "bytes": 70831,
+      "sha256": "d3c98266b5ca5fc081b18668b70a1138561b8c86231fc239a75064bb8e776f2d"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_0_points_world.npy",
+      "bytes": 600128,
+      "sha256": "95dec704528add9c0e3ff0833a801f7531166405a8a8873132092372e731373e"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_0_weights.npy",
+      "bytes": 200128,
+      "sha256": "a4abd31596c7ffc00b76f2a17ce9c67544ca864a83c541d9beb8906c6b5a3d0a"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_1_points_world.npy",
+      "bytes": 600128,
+      "sha256": "2b7300c0ddcc4986be7ed8f0463c079dd140a5723343b37c2e1ec23311bcfcc4"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_1_weights.npy",
+      "bytes": 200128,
+      "sha256": "a4bbff4c9786e91f49a20ca62a72cf5b4251cd25696cf75bc8975d1331a96d5c"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_2_points_world.npy",
+      "bytes": 600128,
+      "sha256": "6f26a89cc04ea93f6bc01ef2f49c479761ef84436d70d733f5b17c8baa0c5623"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_2_weights.npy",
+      "bytes": 200128,
+      "sha256": "2051aa2a32e112ba0121fc319d808b7ca1f5dbc80f5732f670516cc40b3974e8"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_3_points_world.npy",
+      "bytes": 600128,
+      "sha256": "5496c7d3dd9d4754b37feacbc4df94d1706b3e8e057aec5bc1e8b3c85c87b5d9"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_3_weights.npy",
+      "bytes": 200128,
+      "sha256": "7ffd88af5c87dbd93c70c95c54a7d5c52ebc97b6973586d5fd1f1acd9a6bf27a"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_4_points_world.npy",
+      "bytes": 96068,
+      "sha256": "cdbd3f9a26d5ca08bef7a40d6c145d27d2a5963000a43d860d6c67ec1081c2a3"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_4_weights.npy",
+      "bytes": 32108,
+      "sha256": "dbc9f053072fe5fd8ced074b728f17affac9c815d838e09030411e4687119ff2"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_5_points_world.npy",
+      "bytes": 600128,
+      "sha256": "f4af963aa668138e59453536753240f4bfc2b9f9bc01779524ef9192e43462d0"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_5_weights.npy",
+      "bytes": 200128,
+      "sha256": "9bc96dfd00acc6f10a2eb6aff2c3b429d34cdc423407aef372b298009145ef37"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_6_points_world.npy",
+      "bytes": 259808,
+      "sha256": "0d112719fa168795c6b8565f2d665db4437d4f58a63726798e9c2f368694bc29"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_001__grass_6_weights.npy",
+      "bytes": 86688,
+      "sha256": "87ca3b89f966e47a371b766869eaab76e4cc1a3b78c865e6b10bc8258bbaaf90"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6/overall_audio.wav",
+      "bytes": 1441964,
+      "sha256": "4e61599031abbfb1686050531f7bdec983d00dfffd31316cac0851e9567d0db9"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6/overall_audio_render.wav",
+      "bytes": 1441964,
+      "sha256": "441605d8dfdf42ea8478140501cfc7a83a363f96cbb3b277379082155dcaf276"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_0.wav",
+      "bytes": 1920080,
+      "sha256": "321fc37cc56e4ef34b4e088536c9c22684c74dec869dfff0547157c5b236f5c9"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_1.wav",
+      "bytes": 1920080,
+      "sha256": "466ca95b622a8df6b9c00c6d7b11302deeb7814e812b57e3cab293fe682b878c"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_2.wav",
+      "bytes": 1920080,
+      "sha256": "c850ba43139d8e0da4df3b2f196f569155cd2536ed6732b47bff1148f195950d"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_3.wav",
+      "bytes": 1920080,
+      "sha256": "0c8d4de1496f964236c0f564e49fa8fdbda34df5ac1613084455c5a70eccd9fe"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_4.wav",
+      "bytes": 1920080,
+      "sha256": "40815616801c5c9c70e12f81de9523b373f9256fd95001e6a5193ebebbbfc601"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_5.wav",
+      "bytes": 1920080,
+      "sha256": "68c5d977b4d9cab79c472cbc01c4bfaff03d71be4573a011b7f67f9734facf70"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_6.wav",
+      "bytes": 1920080,
+      "sha256": "800edb9124d55189bb3f202d4bab201b0b8b95c21d19556370431b61a322ff33"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_7.wav",
+      "bytes": 1920080,
+      "sha256": "adfe2d3ca085217a3293451ec1fa455c968a108b644f2427d04b869c971c125a"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/object_8.wav",
+      "bytes": 1920080,
+      "sha256": "bab18dd7abb3950de95b4c37b9266459805d40d5352bc3991c0c3e10ad9d9caa"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v6_10s/sources-meta.json",
+      "bytes": 36956,
+      "sha256": "716a6952de524d16380fb568f28622b83eef755a418bb0a8bf2d5bb26637a8df"
+    },
+    {
+      "path": "input/video.mp4",
+      "bytes": 4477273,
+      "sha256": "21fd8c70b41e2e2f60ce53a77ef5b8813e8d71a075858e57ca3ca6892575d47b"
+    },
+    {
+      "path": "study-render-metadata.json",
+      "bytes": 11174,
+      "sha256": "3666c4b9fe743e0419c27ebb8c94cdc20859397a1e831558b2d91af3b7431136"
+    },
+    {
+      "path": "study-camera-path.json",
+      "bytes": 148774,
+      "sha256": "149e76271e8da3a22c39c9424d31e2fe6779088bce8bbe884d5741bd5e93dcb9"
+    }
+  ],
+  "original_total_bytes": 144427382
+}

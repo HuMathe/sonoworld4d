@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPQT9S1FWC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GPQT9S1FWC');
+  </script>
   <title>Interactive Viewer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,6 +166,7 @@
     }
     .bg-load-row input { margin: 0; accent-color: #9aa8c7; cursor: pointer; }
     .bg-load-note { color: rgba(255,255,255,0.32); font-size: 9px; margin: 0 0 8px; }
+    #sceneListStatus { color: rgba(255,255,255,0.75); font-size: 11px; line-height: 1.4; margin: 8px 0 0; }
     .bg-layer-controls { margin: 0 0 8px; }
     .bg-layer-controls button { text-align: left; padding-left: 10px; }
 
@@ -400,8 +409,9 @@
       </div>
       <div class="panel-body" id="body-scene">
         <label for="scenePathInput">Scene</label>
-        <select id="scenePathInput"></select>
-        <button id="loadSceneBtn" class="primary">Load Scene</button>
+        <select id="scenePathInput" disabled></select>
+        <button id="loadSceneBtn" class="primary" disabled>Load Scene</button>
+        <div id="sceneListStatus" class="bg-load-note" role="status" hidden></div>
       </div>
     </div>
 
@@ -587,6 +597,7 @@
     // Spark (sparkjs.dev): Gaussian splat rendering on three.js. Every SplatMesh in the
     // scene is drawn in one GPU-sorted pass; splats stay editable through packedSplats.
     import { SparkRenderer, SplatMesh, setPackedSplat, unpackSplat } from '@sparkjsdev/spark';
+    import { DopplerMotion, samplePosition, setDopplerRate, ScenePlaybackClock } from './scripts/assets/viewer_doppler.mjs';
 
     // ─── State ────────────────────────────────────────────────────────────────
     let sceneLoaded = false;
@@ -599,6 +610,9 @@
     let geoMeta = null;       // optional multi-object dyn_amb geometry
     let staticGeoMeta = null; // optional grounded static-source geometry
     let audioSourcesMeta = null;
+    let audioRunOverride = null; // optional scene-local viewer-config.json selection
+    let audioSourceOverrides = {}; // exact runtime gains/distances for authored scene variants
+    let initialCameraPose = null; // optional authored starting pose, still freely explorable
     // World length multiplier for every WebAudio source / listener position, from the audio
     // stage's provenance (sources-meta.json audio_world_scale.world_scale_multiplier: the
     // Background metric scale the audio was rendered at). The demo viewer always uses the
@@ -651,6 +665,9 @@
     let audioStartCtxTime = 0;
     let audioStartSceneTime = 0;
     let audioEnabled = true;
+    const dopplerMotion = new DopplerMotion();
+    const playbackClock = new ScenePlaybackClock();
+    let playbackClockKind = null;
 
     // Foreground
     let fgVisible = true;
@@ -679,7 +696,6 @@
 
     // THREE / viewer
     const clock = new THREE.Clock();
-    const c = 343.3;
 
     // Scene artifacts use SLAM world OpenCV coordinates. The viewer uses the
     // metric Background panorama frame with GL axes (+Y up, -Z forward). C changes
@@ -1008,6 +1024,63 @@
         : null;
     }
 
+    async function loadViewerConfig(basePath) {
+      const response = await fetch(`${basePath}/viewer-config.json`, { cache: 'no-store' });
+      if (response.status === 404) return {};
+      if (!response.ok) throw new Error(`Cannot load viewer-config.json (${response.status})`);
+      const config = await response.json();
+      if (!config || typeof config !== 'object' || Array.isArray(config)) {
+        throw new Error('viewer-config.json must contain an object');
+      }
+      if (config.audio_run !== undefined) {
+        const run = validRunName(config.audio_run);
+        if (!run) throw new Error('viewer-config.json audio_run must name one audio source folder');
+        config.audio_run = run;
+      }
+      if (config.audio_source_overrides !== undefined) {
+        const overrides = config.audio_source_overrides;
+        if (!overrides || typeof overrides !== 'object' || Array.isArray(overrides)) {
+          throw new Error('viewer-config.json audio_source_overrides must contain an object');
+        }
+        for (const [sourceId, override] of Object.entries(overrides)) {
+          if (!sourceId || !override || typeof override !== 'object' || Array.isArray(override)
+              || !Number.isFinite(override.gain) || override.gain < 0
+              || !Number.isFinite(override.reference_distance) || override.reference_distance <= 0) {
+            throw new Error(`viewer-config.json audio_source_overrides.${sourceId} requires a finite nonnegative gain and positive reference_distance`);
+          }
+        }
+      }
+      if (config.initial_camera !== undefined) {
+        const pose = config.initial_camera;
+        const finiteArray = (value, length) => Array.isArray(value)
+          && value.length === length && value.every(Number.isFinite);
+        if (!pose || pose.coordinate_system !== 'threejs_world_gl'
+            || !finiteArray(pose.position, 3) || !finiteArray(pose.quaternion_xyzw, 4)
+            || Math.hypot(...pose.quaternion_xyzw) < 1e-9
+            || (pose.fov_degrees !== undefined && (!Number.isFinite(pose.fov_degrees)
+              || pose.fov_degrees <= 0 || pose.fov_degrees >= 180))) {
+          throw new Error('viewer-config.json initial_camera requires a valid SLAM-GL pose and field of view');
+        }
+      }
+      return config;
+    }
+
+    function audioSourceRunUrls(basePath, filename) {
+      const runs = audioRunOverride ? [audioRunOverride] : ['sw4d_audio_v8_dev', 'sw4d_audio_v8'];
+      return runs.map(run => `${basePath}/audio/sources/${encodeURIComponent(run)}/${filename}`);
+    }
+
+    async function loadAudioSourceMetadata(basePath) {
+      const urls = audioSourceRunUrls(basePath, 'sources-meta.json');
+      const result = await fetchFirstOptionalJson(urls);
+      if (audioRunOverride && (!result?.data || typeof result.data !== 'object' || Array.isArray(result.data))) {
+        throw new Error(`Configured audio run ${audioRunOverride} has no valid sources-meta.json`);
+      }
+      const run = result ? decodeURIComponent(result.url.split('/').at(-2)) : 'none';
+      console.info('Audio source run:', run, audioRunOverride ? '(viewer-config.json)' : '(automatic)');
+      return result;
+    }
+
     function foregroundSpecsFromManifest(manifest, selectedObjectId, fallbackForegroundRun) {
       const sources = Array.isArray(manifest?.sources)
         ? manifest.sources.filter(source => source && typeof source === 'object')
@@ -1073,13 +1146,13 @@
 
     const scene = new THREE.Scene();
 
-    // The viewer's field of view is fixed: 60 degrees vertical, whatever the SLAM
-    // intrinsics or a saved camera path say (their focal scales are ignored on purpose).
+    // Each scene keeps a fixed field of view: 60 degrees by default, or its
+    // authored starting view. SLAM intrinsics and imported paths do not change it.
     const FIXED_FOV_DEG = 60;
     const camera = new THREE.PerspectiveCamera(FIXED_FOV_DEG, innerWidth / innerHeight, 0.05, 2000);
 
     function applyFixedProjection(near = camera.near, far = camera.far) {
-      camera.fov = FIXED_FOV_DEG;
+      camera.fov = initialCameraPose?.fov_degrees ?? FIXED_FOV_DEG;
       camera.aspect = cameraViewportAspect();
       camera.near = near;
       camera.far = far;
@@ -1715,7 +1788,7 @@
       isUiLocked = locked;
       document.getElementById('controlPanel').classList.toggle('ui-locked', locked);
       document.getElementById('panelToggleBtn').classList.toggle('ui-locked', locked);
-      loadSceneBtn.disabled = locked;
+      loadSceneBtn.disabled = locked || !document.getElementById('scenePathInput').value;
     }
 
     function updateTrajectoryStatus() {
@@ -2215,6 +2288,7 @@
       updateCustomCameraControls();
       updateCameraKeyframeMarkers();
       updateCameraModeControls();
+      resetDopplerMotion();
       if (activate) setCustomCameraMode();
       return {
         duration_seconds: customCameraPath.duration_seconds,
@@ -2259,7 +2333,7 @@
         marker.addEventListener('click', event => {
           event.stopPropagation();
           const wasPlaying = isPlaying;
-          if (wasPlaying) pauseAudio();
+          pauseAudio();
           currentTime = THREE.MathUtils.clamp(keyframeTime, 0, duration);
           applyFrame();
           updateTimeLabel();
@@ -2295,6 +2369,7 @@
 
     function addCameraKeyframe() {
       if (!sceneLoaded) return;
+      resetDopplerMotion();
       const sample = captureCameraSample(0);
       const frameIndex = currentFrameIndex();
       const keyframeTime = frameIndex / videoFps;
@@ -2325,6 +2400,7 @@
 
     function undoCameraKeyframe() {
       if (!cameraKeyframes.length) return;
+      resetDopplerMotion();
       const newestId = Math.max(...cameraKeyframes.map(frame => Number(frame.keyframe_id)));
       cameraKeyframes = cameraKeyframes.filter(frame => Number(frame.keyframe_id) !== newestId);
       cameraKeyframes.forEach((frame, index) => { frame.keyframe = index; });
@@ -2338,6 +2414,7 @@
     }
 
     function clearCameraKeyframes() {
+      resetDopplerMotion();
       cameraKeyframes = [];
       latestCameraKeyframeId = null;
       nextCameraKeyframeId = 1;
@@ -2594,6 +2671,7 @@
     }
 
     function setCameraMode(objectId = null) {
+      resetDopplerMotion();
       customCameraActive = false;
       if (objectId !== null) {
         const key = String(objectId);
@@ -2613,6 +2691,7 @@
     }
 
     function enterFreeExploreAtVggtFrame(frameIdx) {
+      resetDopplerMotion();
       customCameraActive = false;
       if (activeCameraRecord()) {
         applyVggtCamera(frameIdx);
@@ -2628,8 +2707,27 @@
       updateCameraModeControls();
     }
 
+    function enterFreeExploreAtSceneStart() {
+      if (!initialCameraPose) return enterFreeExploreAtVggtFrame(0);
+      resetDopplerMotion();
+      customCameraActive = false;
+      followVggtCamera = false;
+      camera.position.fromArray(initialCameraPose.position).applyMatrix4(slamGlToViewer);
+      camera.quaternion.fromArray(initialCameraPose.quaternion_xyzw).normalize()
+        .premultiply(slamGlToViewerRotation);
+      const euler = new THREE.Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+      yaw = euler.y;
+      pitch = euler.x;
+      applyFixedProjection();
+      applyFreeCameraRotation();
+      prevPos.copy(camera.position);
+      updateCameraModeControls();
+      console.info('Initial camera: authored free view', camera.position.toArray(), 'FOV:', camera.fov);
+    }
+
     function setCustomCameraMode() {
       if (!customCameraPath) return false;
+      resetDopplerMotion();
       customCameraActive = true;
       followVggtCamera = false;
       if (document.pointerLockElement === renderer.domElement) document.exitPointerLock();
@@ -2661,6 +2759,11 @@
     }
 
     function resetCamera() {
+      resetDopplerMotion();
+      if (sceneLoaded && initialCameraPose && !followVggtCamera && !customCameraActive) {
+        enterFreeExploreAtSceneStart();
+        return;
+      }
       if (customCameraActive && customCameraPath) {
         applyCustomCamera();
         updateCameraModeControls();
@@ -2719,29 +2822,47 @@
     let isScrubbing = false;
     let rAFId = null;
 
-    timeSlider.addEventListener('mousedown', () => { isScrubbing = true; pauseAudio(); });
-    timeSlider.addEventListener('touchstart', () => { isScrubbing = true; pauseAudio(); }, { passive: true });
-    timeSlider.addEventListener('input', () => {
+    function beginScrub() {
+      if (!sceneLoaded || isUiLocked) return;
+      capturePlaybackTime();
+      isScrubbing = true;
+      pauseAudio();
+    }
+
+    function seekFromSlider() {
+      if (!sceneLoaded || isUiLocked) return;
+      // Keyboard input has no pointerdown/up pair, so restart it immediately.
+      pauseAudio();
       currentTime = parseFloat(timeSlider.value) / 1000 * duration;
       updateTimeLabel();
       applyFrame();
-    });
-    timeSlider.addEventListener('mouseup', () => {
-      isScrubbing = false;
-      if (isPlaying) resumeAudio();
-    });
-    timeSlider.addEventListener('touchend', () => {
-      isScrubbing = false;
-      if (isPlaying) resumeAudio();
-    });
+      if (isPlaying && !isScrubbing) resumeAudio();
+    }
 
-    speedSelect.addEventListener('change', () => {
-      playSpeed = parseFloat(speedSelect.value);
-      if (isPlaying && audioCtx && audioSrcNode) audioSrcNode.playbackRate.value = playSpeed;
-      for (const track of audioTracks.values()) {
-        if (track.sourceNode) track.sourceNode.playbackRate.value = playSpeed;
+    function endScrub() {
+      if (!isScrubbing) return;
+      isScrubbing = false;
+      if (isPlaying) resumeAudio();
+    }
+
+    timeSlider.addEventListener('pointerdown', beginScrub);
+    timeSlider.addEventListener('input', seekFromSlider);
+    window.addEventListener('pointerup', endScrub);
+    window.addEventListener('pointercancel', endScrub);
+    window.addEventListener('blur', endScrub);
+
+    function setPlaybackSpeed(speed) {
+      if (!Number.isFinite(speed) || speed <= 0) return;
+      capturePlaybackTime();
+      playSpeed = speed;
+      if (audioSrcNode) audioSrcNode.playbackRate.value = playSpeed;
+      resetDopplerMotion();
+      if (isPlaying && !isScrubbing) {
+        rebasePlaybackClock(audioCtx ? Math.max(audioCtx.currentTime, audioStartCtxTime) : null);
       }
-    });
+    }
+
+    speedSelect.addEventListener('change', () => setPlaybackSpeed(parseFloat(speedSelect.value)));
 
     function updateTimeLabel() {
       const pct = duration > 0 ? currentTime / duration : 0;
@@ -2751,15 +2872,19 @@
 
     function togglePlay() {
       if (!sceneLoaded) return;
-      // demo viewer: at the last frame Play / Space do nothing; only Reset goes back to
-      // the first frame
-      if (!isPlaying && currentTime >= duration - 1e-3) return;
+      // At the end, Play (including the timeline button and Space) replays the scene.
+      if (!isPlaying && currentTime >= duration - 1e-3) {
+        restartPlayback();
+        return;
+      }
+      capturePlaybackTime();
       isPlaying = !isPlaying;
       if (isPlaying) {
-        resumeAudio();
+        if (!isScrubbing) resumeAudio();
         startRenderLoop();
       } else {
         pauseAudio();
+        applyFrame();
       }
       updatePlayBtns();
     }
@@ -2774,7 +2899,8 @@
     tlPlayBtn.addEventListener('click',     () => { if (!isUiLocked) togglePlay(); });
     function restartPlayback() {
       if (!sceneLoaded) return;
-      if (isPlaying) { isPlaying = false; pauseAudio(); }
+      pauseAudio();
+      isScrubbing = false;
       currentTime = 0;
       applyFrame();
       updateTimeLabel();
@@ -2785,8 +2911,11 @@
     }
     resetTimeBtn.addEventListener('click',  () => {
       if (isUiLocked) return;
+      pauseAudio();
+      isPlaying = false;
+      isScrubbing = false;
       currentTime = 0;
-      if (isPlaying) { isPlaying = false; pauseAudio(); updatePlayBtns(); }
+      updatePlayBtns();
       applyFrame();
       updateTimeLabel();
       syncAudioToScene();
@@ -2832,13 +2961,8 @@
         : (Array.isArray(geoMeta?.obj_pos) ? geoMeta.obj_pos : []);
       if (!positions.length) return null;
       const audioFps = Number(geoMeta?.fps) > 0 ? Number(geoMeta.fps) : videoFps;
-      const frameIdx = Math.max(
-        0,
-        Math.min(Math.round(currentTime * audioFps), positions.length - 1),
-      );
-      return isPoint3(positions[frameIdx])
-        ? slamPointToViewer(positions[frameIdx])
-        : null;
+      const position = samplePosition(positions, currentTime, audioFps);
+      return position ? slamPointToViewer(position) : null;
     }
 
     function sourceInitialPosition(source) {
@@ -2880,6 +3004,7 @@
     }
 
     function clearAudioTracks() {
+      resetDopplerMotion();
       for (const track of audioTracks.values()) {
         if (track.sourceNode) {
           track.sourceNode.onended = null;
@@ -2908,10 +3033,17 @@
       initAudioCtx();
       const sourceId = String(source.source_id);
       const role = sourceRole(source);
+      const override = Object.prototype.hasOwnProperty.call(audioSourceOverrides, sourceId)
+        ? audioSourceOverrides[sourceId] : null;
       const sourcePeak = audioBufferPeak(buffer);
       const peakDb = Number(source?.peak_db);
-      const normalizationGain = sourcePeak > 0 ? 1.0 / sourcePeak : 1.0;
-      const sourceGain = Number.isFinite(peakDb) ? 10 ** (peakDb / 20.0) : 1.0;
+      // Baked FLOAT stems already contain their fixed mix gains, including
+      // amplitudes above 1 before spatial attenuation. Preserve those samples.
+      const gainsBaked = source.audio_processing_baked === true
+        || audioSourcesMeta?.bake?.all_fixed_gains_in_audio === true;
+      const normalizationGain = !override && !gainsBaked && sourcePeak > 0 ? 1.0 / sourcePeak : 1.0;
+      const sourceGain = override ? override.gain
+        : (!gainsBaked && Number.isFinite(peakDb) ? 10 ** (peakDb / 20.0) : 1.0);
       const normalizationGainNode = audioCtx.createGain();
       const gain = audioCtx.createGain();
       normalizationGainNode.gain.value = normalizationGain;
@@ -2923,7 +3055,11 @@
         panner = audioCtx.createPanner();
         panner.panningModel = 'HRTF';
         panner.distanceModel = 'inverse';
-        panner.refDistance = Math.max(0.05, Number(source.doppler_scale) || 1.0);
+        // Uncalibrated baked stems use ordinary 1/r attenuation; their old
+        // doppler_scale is provenance, not an additional distance-gain factor.
+        panner.refDistance = override ? override.reference_distance
+          : (gainsBaked && source.canonical_stem_gain_applied !== true
+            ? 1.0 : Math.max(0.05, Number(source.doppler_scale) || 1.0));
         panner.maxDistance = 10000;
         panner.rolloffFactor = 1.0;
         setAudioPosition(panner, initialPosition);
@@ -2937,7 +3073,7 @@
       audioTracks.set(sourceId, {
         source, sourceId, role, buffer,
         sourcePeak, normalizationGainNode, gainNode: gain,
-        pannerNode: panner, sourceNode: null,
+        pannerNode: panner, sourceNode: null, dopplerRatio: 1,
       });
     }
 
@@ -2976,14 +3112,14 @@
         const result = await decodeFirstAudio([
           sceneArtifactUrl(basePath, source?.audio),
           sceneArtifactUrl(basePath, declaredObjectAudios[sourceIndex]),
-          `${basePath}/audio/sources/sw4d_audio_v8_dev/object_${fallbackIndex}.wav`,
-          `${basePath}/audio/sources/sw4d_audio_v8/object_${fallbackIndex}.wav`,
+          ...audioSourceRunUrls(basePath, `object_${fallbackIndex}.wav`),
         ]);
         return result ? { source, ...result } : null;
       }));
       for (const item of loaded.filter(Boolean)) {
         installAudioTrack(item.source, item.buffer);
-        console.info('Loaded spatial audio stem:', item.url, {
+        console.info('Loaded spatial audio stem:', item.url,
+          'decoded peak:', audioTracks.get(String(item.source.source_id))?.sourcePeak, {
           sourceId: item.source.source_id,
           role: sourceRole(item.source),
           decodedPeak: audioTracks.get(String(item.source.source_id))?.sourcePeak,
@@ -2993,6 +3129,71 @@
         });
       }
       return audioTracks.size;
+    }
+
+    async function loadLegacyAudioFallback(basePath) {
+      return decodeFirstAudio([
+        sceneArtifactUrl(basePath, audioSourcesMeta?.overall_audio_render),
+        sceneArtifactUrl(basePath, audioSourcesMeta?.overall_audio),
+        ...audioSourceRunUrls(basePath, `object_${focusObjectId}.wav`),
+      ]);
+    }
+
+    // Real-time Doppler is always enabled for positional stems. This changes
+    // playback rate, not the scene clock, and does not model propagation delay.
+    function resetDopplerMotion() {
+      dopplerMotion.reset();
+      for (const track of audioTracks.values()) {
+        track.dopplerRatio = 1;
+        if (track.sourceNode && audioCtx) {
+          setDopplerRate(track.sourceNode.playbackRate, playSpeed, audioCtx.currentTime, false);
+        }
+      }
+    }
+
+    document.addEventListener('visibilitychange', resetDopplerMotion);
+
+    function updateAudioDoppler() {
+      if (!isPlaying || isScrubbing || !audioEnabled || !audioCtx
+          || audioCtx.state !== 'running' || audioCtx.currentTime < audioStartCtxTime) return;
+      const positions = new Map();
+      for (const track of audioTracks.values()) {
+        if (track.sourceNode && track.pannerNode) {
+          positions.set(track.sourceId, sourcePositionAtTime(track.source)?.toArray() ?? null);
+        }
+      }
+      // These are unscaled viewer coordinates. DopplerMotion converts the
+      // velocities to metres once; PannerNode positions are already scaled.
+      const ratios = dopplerMotion.sample(
+        audioCtx.currentTime, camera.position.toArray(), positions, audioWorldScale,
+      );
+      for (const track of audioTracks.values()) {
+        if (!track.sourceNode) continue;
+        track.dopplerRatio = ratios.get(track.sourceId) ?? 1;
+        if (track.pannerNode) {
+          setDopplerRate(track.sourceNode.playbackRate, playSpeed * track.dopplerRatio, audioCtx.currentTime);
+        }
+      }
+    }
+
+    function rebasePlaybackClock(audioStart = null) {
+      playbackClockKind = audioEnabled && hasPlayableAudio() && audioCtx ? 'audio' : 'wall';
+      const now = playbackClockKind === 'audio'
+        ? (audioStart ?? audioCtx.currentTime) : performance.now() / 1000;
+      playbackClock.anchor(now, currentTime, playSpeed);
+    }
+
+    function scenePlaybackTime() {
+      const kind = audioEnabled && hasPlayableAudio() && audioCtx ? 'audio' : 'wall';
+      if (kind !== playbackClockKind) rebasePlaybackClock();
+      const now = kind === 'audio' ? audioCtx.currentTime : performance.now() / 1000;
+      return Math.min(duration, playbackClock.time(now));
+    }
+
+    function capturePlaybackTime() {
+      if (isPlaying && !isScrubbing && playbackClockKind !== null) {
+        currentTime = scenePlaybackTime();
+      }
     }
 
     function hasPlayableAudio() {
@@ -3016,6 +3217,7 @@
       audioStartCtxTime = audioCtx.currentTime;
       audioStartSceneTime = currentTime;
       audioSrcNode = src;
+      rebasePlaybackClock(audioStartCtxTime);
       src.onended = () => {
         if (audioSrcNode !== src) return;
         audioSrcNode = null;
@@ -3049,9 +3251,12 @@
       }
       audioStartCtxTime = startAt;
       audioStartSceneTime = currentTime;
+      rebasePlaybackClock(startAt);
     }
 
     function resumeAudio() {
+      resetDopplerMotion();
+      rebasePlaybackClock();
       if (!audioEnabled || !hasPlayableAudio()) return;
       initAudioCtx();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -3060,6 +3265,8 @@
     }
 
     function pauseAudio() {
+      resetDopplerMotion();
+      playbackClockKind = null;
       if (audioSrcNode) {
         audioSrcNode.onended = null;
         try { audioSrcNode.stop(); } catch (e) {}
@@ -3077,7 +3284,7 @@
 
     function syncAudioToScene() {
       // called when currentTime changes externally and audio needs resync
-      if (isPlaying) {
+      if (isPlaying && !isScrubbing) {
         pauseAudio();
         resumeAudio();
       }
@@ -3124,17 +3331,21 @@
       }
     }
 
-    toggleAudioBtn.addEventListener('click', () => {
-      if (isUiLocked) return;
-      audioEnabled = !audioEnabled;
+    function setAudioEnabled(enabled) {
+      capturePlaybackTime();
+      audioEnabled = Boolean(enabled);
       toggleAudioBtn.textContent = audioEnabled ? 'Audio: ON' : 'Audio: OFF';
+      pauseAudio();
+      if (isPlaying && !isScrubbing) resumeAudio();
       if (!audioEnabled) {
-        pauseAudio();
         leftVolumeEl.style.width = '0%';
         rightVolumeEl.style.width = '0%';
-      } else if (isPlaying) {
-        resumeAudio();
       }
+    }
+
+    toggleAudioBtn.addEventListener('click', () => {
+      if (isUiLocked) return;
+      setAudioEnabled(!audioEnabled);
     });
 
     // ─── Foreground Gaussian transform ────────────────────────────────────────
@@ -3714,6 +3925,7 @@
       uniforms: {
         tB: { value: null }, tBd: { value: null }, tO: { value: null }, tOd: { value: null },
         tF: { value: null }, tFd: { value: null }, uTolerance: { value: 0.0 }, uSoft: { value: 0.05 },
+        uSkyDepthPush: { value: 0.0 },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -3721,13 +3933,13 @@
       fragmentShader: `
         precision highp float;
         uniform sampler2D tB, tBd, tO, tOd, tF, tFd;
-        uniform float uTolerance, uSoft;
+        uniform float uTolerance, uSoft, uSkyDepthPush;
         varying vec2 vUv;
         vec4 over(vec4 a, vec4 b) { return a + b * (1.0 - a.a); }   // premultiplied a over b
         float depthOf(vec4 d) { return d.a > 1e-4 ? d.r / d.a : 1e9; }
         void main() {
           vec4 B = texture2D(tB, vUv), O = texture2D(tO, vUv), F = texture2D(tF, vUv);
-          float bD = depthOf(texture2D(tBd, vUv));
+          float bD = depthOf(texture2D(tBd, vUv)) + uSkyDepthPush;
           float oD = depthOf(texture2D(tOd, vUv));
           vec4 Fd = texture2D(tFd, vUv);
           // occluders vs support / sky: true depth
@@ -3866,6 +4078,16 @@
       }
       return compositeToleranceWorld === null ? 0 : compositeToleranceWorld;
     }
+    function compositeSkyDepthPush() {
+      // Airborne scenes have no support surface: B then contains only sky.
+      // Match the layered viewer's distant-sky semantics so a finite sky shell
+      // cannot hide the aircraft. Keep the existing depth test when B also
+      // contains a support surface (for example, Porsche's road).
+      const visibleBehind = backgroundLayers.filter(layer =>
+        layer.sortBias && layer.loaded && bgVisible && layer.visible && layer.mesh?.visible);
+      return visibleBehind.length && visibleBehind.every(layer => layer.sortBias === 'sky')
+        ? 1e6 : 0;
+    }
     function syncCompositeButtons() {
       toggleDepthCompositeBtn.textContent = 'Depth Composite: ON';
       toggleDepthCompositeBtn.disabled = true;
@@ -3910,6 +4132,7 @@
         u.tO.value = targets.O.texture; u.tOd.value = targets.Od.texture;
         u.tF.value = targets.F.texture; u.tFd.value = targets.Fd.texture;
         u.uTolerance.value = compositeTolerance();
+        u.uSkyDepthPush.value = compositeSkyDepthPush();
         renderer.render(compositeScene, compositeCamera);
       }
       renderer.setRenderTarget(null);
@@ -3940,16 +4163,10 @@
       else velocity.set(0, 0, 0);
       prevPos.copy(camera.position);
 
-      // Keep distance, panning, meters, and the object marker responsive while
-      // freely exploring, including when animation playback is paused.
-      if (sceneLoaded) {
-        updateAudioSourceVisuals();
-        updateAudioSpatialization();
-      }
-
-      // Advance playback time
+      // Scene time follows the audio clock (or wall time when silent), never
+      // the capped movement dt: slow rendering must not slow the scene down.
       if (isPlaying && !isScrubbing) {
-        currentTime += dt * playSpeed;
+        currentTime = scenePlaybackTime();
         if (currentTime >= duration) {
           currentTime = duration;
           isPlaying = false;
@@ -3959,6 +4176,11 @@
         applyFrame();
       }
       if (sceneLoaded) {
+        // Sample source and listener motion after applying this frame's poses.
+        // Panning remains responsive during paused free exploration as well.
+        updateAudioSourceVisuals();
+        updateAudioSpatialization();
+        updateAudioDoppler();
         updateTrajectoryLabels();
         updateAudioSourceLabels();
       }
@@ -3973,15 +4195,28 @@
     }
 
     // ─── Scene loading ────────────────────────────────────────────────────────
-    // Scenes come from <SCENE_ROOT>/scenes.json, which static hosts need
-    // because they cannot list directories (scripts/web_demo_export.py
-    // scene-list writes it); without it, the local server's directory listing
-    // is used. Options show the scene name; their value is the scene path.
-    const SCENE_ROOT = 'output-scenes/test-vggt';
+    // Keep local previews on disk; published pages use one verified HF revision
+    // for the manifest, scene configuration, geometry, and audio together.
+    function sceneRootForHostname(hostname) {
+      const host = String(hostname).toLowerCase().replace(/^\[|\]$/g, '');
+      return ['localhost', '127.0.0.1', '::1'].includes(host)
+        ? 'output-scenes/test-vggt'
+        : 'https://huggingface.co/datasets/DerongJin/SonoWorld4D-Demo-Scenes/resolve/1f980c1ae2ddbf5646cc40172a785cf499348d0b/output-scenes/test-vggt';
+    }
+    const SCENE_ROOT = sceneRootForHostname(window.location.hostname);
 
     async function listScenes() {
       const manifest = await fetchOptionalJson(`${SCENE_ROOT}/scenes.json`, null);
-      if (Array.isArray(manifest?.scenes)) return manifest.scenes.map(String);
+      if (Array.isArray(manifest?.scenes) && manifest.scenes.length
+          && manifest.scenes.every(name => typeof name === 'string'
+            && /^[\w.-]+$/.test(name) && name !== '.' && name !== '..')) {
+        return manifest.scenes;
+      }
+      // HF resolve URLs are downloads, not directory indexes. Never scrape an
+      // HF HTML/error page or fall back to a different revision or local scene.
+      if (SCENE_ROOT !== 'output-scenes/test-vggt') {
+        throw new Error('Unable to load the scene list. Check your connection and reload this page.');
+      }
       try {
         const response = await fetch(`${SCENE_ROOT}/`, { cache: 'no-store' });
         if (!response.ok) return [];
@@ -3998,14 +4233,43 @@
         select.add(new Option(scenePath.split('/').pop(), scenePath));
       }
       select.value = scenePath;
+      select.disabled = false;
+      document.getElementById('sceneListStatus').hidden = true;
     }
 
-    (async () => {
-      const scenes = (await listScenes()).sort();
-      document.getElementById('scenePathInput').replaceChildren(
-        ...scenes.map(name => new Option(name, `${SCENE_ROOT}/${name}`))
-      );
-    })();
+    async function populateSceneOptions() {
+      const select = document.getElementById('scenePathInput');
+      const status = document.getElementById('sceneListStatus');
+      select.disabled = true;
+      loadSceneBtn.disabled = true;
+      select.replaceChildren(new Option('Loading scenes...', ''));
+      status.hidden = true;
+      try {
+        const scenes = await listScenes();  // Preserve manifest order and default scene.
+        if (!scenes.length) throw new Error('No scenes found. Reload this page to try again.');
+        // An explicit interactiveViewer.loadScene(path) may finish choosing a
+        // path while the manifest is pending. Keep that selection, even if the
+        // caller supplied a scene outside this manifest.
+        const selectedPath = select.value;
+        select.replaceChildren(...scenes.map(name => new Option(name, `${SCENE_ROOT}/${name}`)));
+        if (selectedPath) selectScenePath(selectedPath);
+        select.disabled = false;
+        loadSceneBtn.disabled = isUiLocked;
+      } catch (error) {
+        if (!select.value) {
+          select.replaceChildren(new Option('Scene list unavailable', ''));
+          select.disabled = true;
+          loadSceneBtn.disabled = true;
+        } else {
+          // A missing list must not disable an explicitly selected API path.
+          select.disabled = false;
+          loadSceneBtn.disabled = isUiLocked;
+        }
+        status.textContent = error.message;
+        status.hidden = false;
+      }
+    }
+    populateSceneOptions();
 
     loadSceneBtn.addEventListener('click', async () => {
       if (isLoading) return;
@@ -4021,6 +4285,7 @@
       panoExtrinsic = null;
       updateViewerCoordinateFrame();
       isPlaying = false;
+      isScrubbing = false;
       customCameraActive = false;
       customCameraPath = null;
       cameraKeyframes = [];
@@ -4037,6 +4302,9 @@
       geoMeta = null;
       staticGeoMeta = null;
       audioSourcesMeta = null;
+      audioRunOverride = null;
+      audioSourceOverrides = {};
+      initialCameraPose = null;
       audioWorldScale = 1;
       audioBuffer = null;
       audioSourcesVisible = false;
@@ -4050,6 +4318,10 @@
       setLoading(true, 'Loading visual metadata...');
 
       try {
+        const viewerConfig = await loadViewerConfig(basePath);
+        audioRunOverride = viewerConfig.audio_run ?? null;
+        audioSourceOverrides = viewerConfig.audio_source_overrides || {};
+        initialCameraPose = viewerConfig.initial_camera || null;
         const preferredTrajectoryMode = transformSelect.value;
         const backgroundsToLoad = selectedBackgroundLayers();
         const bgRunBase = `${basePath}/3d/background/background_v1`;
@@ -4233,10 +4505,7 @@
         // rate is recorded there (sources-meta video_timing, geometry-meta
         // fps), and the SLAM run only records a rate when it resampled.
         const [sourceMetaResult, loadedDynamicGeometry, loadedStaticGeometry] = await Promise.all([
-          fetchFirstOptionalJson([
-            `${basePath}/audio/sources/sw4d_audio_v8_dev/sources-meta.json`,
-            `${basePath}/audio/sources/sw4d_audio_v8/sources-meta.json`,
-          ]),
+          loadAudioSourceMetadata(basePath),
           fetchOptionalJson(`${basePath}/audio/geometry/dyn_amb/geometry-meta.json`, null),
           fetchOptionalJson(`${basePath}/audio/geometry/static_grounding/geometry-meta.json`, null),
         ]);
@@ -4255,7 +4524,7 @@
         infoDurationEl.textContent = duration.toFixed(2) + ' s';
         infoBgRefEl.textContent = String(bgRefIdx);
 
-        // ── 2. Load v8 source plan, all source geometry, and final mix ─────
+        // ── 2. Load the selected source plan, source geometry, and final mix ──
         setLoading(true, 'Loading audio sources...');
         try {
           audioWorldScale = metadataAudioScale(audioSourcesMeta);
@@ -4267,17 +4536,12 @@
             // Old scenes without per-source metadata retain their original
             // final-mix playback. It is intentionally listener-space because
             // one mixed waveform cannot be rebound to several geometries.
-            const fallback = await decodeFirstAudio([
-              sceneArtifactUrl(basePath, audioSourcesMeta?.overall_audio_render),
-              sceneArtifactUrl(basePath, audioSourcesMeta?.overall_audio),
-              `${basePath}/audio/sources/sw4d_audio_v8_dev/object_${focusObjectId}.wav`,
-              `${basePath}/audio/sources/sw4d_audio_v8/object_${focusObjectId}.wav`,
-            ]);
+            const fallback = await loadLegacyAudioFallback(basePath);
             audioBuffer = fallback?.buffer || null;
             if (fallback) console.info('Loaded legacy audio fallback:', fallback.url);
           }
           if (!hasPlayableAudio()) {
-            console.warn('No v8/v6 per-source stems or final audio mix was found.');
+            console.warn('No playable source stems or final audio mix was found for', audioRunOverride || 'automatic audio selection');
           }
         } catch (e) {
           console.warn('Audio load failed:', e);
@@ -4396,10 +4660,9 @@
         updateAudioSourceControls();
         updateCustomCameraControls();
 
-        // Demo viewer: place the camera at the VGGT camera's first frame, then hand it to
-        // free explore (WASD + mouse look) facing the same way. The recorded camera is
-        // never followed during playback; "Recenter Camera" (or C) returns to it.
-        enterFreeExploreAtVggtFrame(0);
+        // Start at the scene's authored pose, or VGGT frame zero, then hand
+        // the camera to free explore. Recenter returns to the authored view.
+        enterFreeExploreAtSceneStart();
         applyFrame();
         startRenderLoop();
         setLoading(false);
@@ -4498,9 +4761,10 @@
         if (!sceneLoaded) throw new Error('scene is not loaded');
         const value = Number(timeSeconds);
         if (!Number.isFinite(value)) throw new Error('time must be finite');
+        pauseAudio();
+        isScrubbing = false;
         if (isPlaying) {
           isPlaying = false;
-          pauseAudio();
           updatePlayBtns();
         }
         currentTime = Math.max(0, Math.min(value, duration));
@@ -4537,6 +4801,15 @@
           num_frames: numFrames,
           width: renderer.domElement.width,
           height: renderer.domElement.height,
+          doppler: {
+            enabled: true,
+            sources: [...audioTracks.values()].map(track => ({
+              source_id: track.sourceId,
+              spatial: Boolean(track.pannerNode),
+              target_ratio: track.sourceNode ? track.dopplerRatio : 1,
+              effective_ratio: track.sourceNode ? track.sourceNode.playbackRate.value / playSpeed : 1,
+            })),
+          },
         };
       },
     };

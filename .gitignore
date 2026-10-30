@@ -2,3 +2,10 @@
 assets/_mp4_backup_*/
 convert_to_webm.sh
 results.zip
+
+# Interactive scene assets are hosted on Hugging Face; keep the local scene list.
+/output-scenes/*
+!/output-scenes/test-vggt/
+/output-scenes/test-vggt/*
+!/output-scenes/test-vggt/scenes.json
+*.partial

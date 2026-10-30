@@ -1,0 +1,382 @@
+{
+  "source_host": "nexusvulcan.umiacs.umd.edu",
+  "source_scene": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/regular-scenes/porsche_4-overall-13trees-baked-v1",
+  "files": [
+    {
+      "path": "3d/background/background_v1/calib_geocalib/w2c_ref_pano.npy",
+      "bytes": 192,
+      "sha256": "d0e27c1dd7c8b3afabe12b50c37366bb8b1175980dec003077d685e660595d8c"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_layers/layers_meta.json",
+      "bytes": 4594,
+      "sha256": "7892ecb263da9111ba9bbc48142d8bde0d869ef5350d3a10f981201c525d4274"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_occluders.ply",
+      "bytes": 44635330,
+      "sha256": "b5c72c5e37d78e75ecbb378950a5f56738339f4fc04d51d9581df074c09003f6"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_sky.ply",
+      "bytes": 32440658,
+      "sha256": "4219f04e077ee9ecd48ab519f9fd1762451f8b3617eedf258206dbd890132efc"
+    },
+    {
+      "path": "3d/background/background_v1/lifting_marble/background_support.ply",
+      "bytes": 30445098,
+      "sha256": "3493dc422f724510f6aed38f871e998d6e825ea0c5418f284a725ea0a8356546"
+    },
+    {
+      "path": "3d/background/background_v1/point_render/meta.json",
+      "bytes": 787,
+      "sha256": "3ac7e2113bfce8fea914570385cb5ccd2d34f24ee0c9f408dc48e42fe1784586"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/align_marble/scale.json",
+      "bytes": 126,
+      "sha256": "620db09ed63fd7f6a847c0cc6e1b0ed289ced7c8925cb8c1e1ee8bc065512d31"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/align_marble_v8/scale.json",
+      "bytes": 126,
+      "sha256": "620db09ed63fd7f6a847c0cc6e1b0ed289ced7c8925cb8c1e1ee8bc065512d31"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/keyframe_pose/0/transformations_keyframes.json",
+      "bytes": 5648,
+      "sha256": "5a20490c535d1606018a703ac9f3fd9843f6bde487fcaca24db194b84fd93401"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/keyframe_pose/0/transformations_smoothed.json",
+      "bytes": 80170,
+      "sha256": "7d4f7aa4c65ee3cce2f3d4e85fbe7db259b8924e1a9aefb5c28d426474af2712"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/keyframe_pose/0/transformations_tracked.json",
+      "bytes": 80145,
+      "sha256": "1d8649ad56634d20d4170d7f3faa67203dc00d789e69a1fbfbe0844366c496f1"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/mvsam3d/0/gaussians_fg_ref_idx.ply",
+      "bytes": 16241258,
+      "sha256": "b9764ca33d5ee77941798e91369f98e98ce25d164e7989ac24dd0669f66325ef"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_adaptive_smoothed.json",
+      "bytes": 75644,
+      "sha256": "6ba83b80bec64fb6885a5234201309b8cea08a23e6b003f4057e18445157fe22"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_aligned.json",
+      "bytes": 75691,
+      "sha256": "5c74241079eef0d71efaf28dbb7925607bc041051123136ae5f23bf230b3218d"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_aligned_raw.json",
+      "bytes": 75664,
+      "sha256": "8b5a02cac8d8714b37d6b3407170bb7844b7b65f0804776b8b1697b711dfafca"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_extrapolation_smoothed.json",
+      "bytes": 75663,
+      "sha256": "e1ca9c319f4b7bb3f1e952645c27959e740187947458114c953cf8ed4a8bc5af"
+    },
+    {
+      "path": "3d/foreground/foreground_v1/pose_extrapolation/0/transformations_linear.json",
+      "bytes": 98749,
+      "sha256": "6c714ac5629a58d4cbfdad17296415efb47ae3676ac3e9a1d10fd2b1643dd887"
+    },
+    {
+      "path": "audio/geometry/dyn_amb/geometry-meta.json",
+      "bytes": 96561,
+      "sha256": "501b822a8e661825c1059f4625f98a6bdbbce5ebfcbac5137dfe4b1ce25ce79a"
+    },
+    {
+      "path": "audio/geometry/static_grounding/geometry-meta.json",
+      "bytes": 21030,
+      "sha256": "ce64cf7c92bcdbcc433e668f3a24eecabe56a321d66e549971c04b260a097924"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S04.npy",
+      "bytes": 140,
+      "sha256": "b6557fad710b0bac609251bfd6e50b64a0ad0a9256e64e71134a87f4635a5233"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S04_weights.npy",
+      "bytes": 132,
+      "sha256": "4396be9607d0a994dba58eb282e281a00da2c554c420229e52b8900d8ac701b1"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S16.npy",
+      "bytes": 140,
+      "sha256": "b107d5ae9018ca9d0bd8e80631febadc8e28e3e812f32412182ec492bc6a5484"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S16_weights.npy",
+      "bytes": 132,
+      "sha256": "4396be9607d0a994dba58eb282e281a00da2c554c420229e52b8900d8ac701b1"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S18.npy",
+      "bytes": 140,
+      "sha256": "2c3174c829d606444d8d9639d0a275de493c9b10f6d0046cd7d9d5db794b48ea"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/bird_S18_weights.npy",
+      "bytes": 132,
+      "sha256": "4396be9607d0a994dba58eb282e281a00da2c554c420229e52b8900d8ac701b1"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_0.npy",
+      "bytes": 93464,
+      "sha256": "f37710c6c00b92aed3e482e1992b92a194510ad4b33fab08fe753f13f5e6c4c0"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_0_weights.npy",
+      "bytes": 31240,
+      "sha256": "5584d751f52462e57a591747697638b3df5bca2a3bba6cc1c1244002147a16f5"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_1.npy",
+      "bytes": 416072,
+      "sha256": "616e8e144ebc95418b5ea40ef8162d723d794234a4f6f232ffdb2a983eb6495d"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_10.npy",
+      "bytes": 310856,
+      "sha256": "4566d1f99258a418de37f64f2d297e0fda9ec85067ea870801b595ad9b684609"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_10_weights.npy",
+      "bytes": 103704,
+      "sha256": "e70df22f717f01648f6c1ed7f8e1ff64f751404390b15fb4b5e0a7789e8fd25e"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_11.npy",
+      "bytes": 55124,
+      "sha256": "a42d6bfec0712eede289b53071496b0b6006ff30c97cfbb2f152e63a80199bb7"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_11_weights.npy",
+      "bytes": 18460,
+      "sha256": "6645a8cf5c75046181b6b5352216bb3b04f513a19bf558f1cd254e545888b9bb"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_12.npy",
+      "bytes": 147152,
+      "sha256": "59543131589ce75e59bb78a3cfd8c05496128ab3a4c52160a3457a83cb7f761d"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_12_weights.npy",
+      "bytes": 49136,
+      "sha256": "94c78b26c3492dcb3177ebbecc7273990d08a4241f872e1ab8af8c577ded9ca9"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_1_weights.npy",
+      "bytes": 138776,
+      "sha256": "5f84b9a8342a000c80851b48d4ef2ebcee0b83d562883df9741d2253d7b96456"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_2.npy",
+      "bytes": 152000,
+      "sha256": "fe286549d7febbbac2f041344b679a93b29755a7a068b9d8e60a19b0d1366f63"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_2_weights.npy",
+      "bytes": 50752,
+      "sha256": "28bc77c6f94c1cd7d031478e66b5d0d4a625bc5bb907f37ed5b193436c7a8ab8"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_3.npy",
+      "bytes": 165260,
+      "sha256": "a94e7cae12ad307bc8b1f0663a0a1c6b85b5793365b9a10a39892e1121987d40"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_3_weights.npy",
+      "bytes": 55172,
+      "sha256": "78fcb3166224666fd41c958d3e224794fc0eceba120f70b37479539adc919198"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_4.npy",
+      "bytes": 118448,
+      "sha256": "6c04b26a326c8513263ac4ac81deb54873e047056f47343142073c837b351b76"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_4_weights.npy",
+      "bytes": 39568,
+      "sha256": "fa1be8b66115e316fa621c91534c6ad0230c47cf968d74fbd3b3ded31bf39948"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_5.npy",
+      "bytes": 76232,
+      "sha256": "16a47d7604e9d99f687f51dc1a9276687e6d500b8271bd912bcb1b809e98f1ea"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_5_weights.npy",
+      "bytes": 25496,
+      "sha256": "e707ebd1482dfdb37fa15c96570f2e6091c74c7d4ba906e11c88031cb7a46d0a"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_6.npy",
+      "bytes": 13616,
+      "sha256": "4f658787f6476583f991c5fa1e848e265d8b997642e86f9e4b368ab2079064fe"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_6_weights.npy",
+      "bytes": 4624,
+      "sha256": "fd7d253d61d6d93f39782a6a8cb854b838111fadfbc69b1534628dd9a0973dc1"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_7.npy",
+      "bytes": 87608,
+      "sha256": "45352e31894b8ddea3520d221efb85ed7d3a845d0085975607dfea7b5d5144d3"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_7_weights.npy",
+      "bytes": 29288,
+      "sha256": "c3433264d5a54993cea9c5a673496a8ea84266a63071395733b12f868eb2e40d"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_8.npy",
+      "bytes": 191840,
+      "sha256": "020643e623214e3478397884b4b23fc20af04003e2f557443189c42abef08deb"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_8_weights.npy",
+      "bytes": 64032,
+      "sha256": "dfc5a55f0573853810526cebaebcd60fa93ba115ce1ed942a467a561cc1df237"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_9.npy",
+      "bytes": 196856,
+      "sha256": "309c39801b9570169ffa6276afb63a050e110fbf994527fdc301a1f6dd5a3aee"
+    },
+    {
+      "path": "audio/geometry/static_grounding/points/source_003__tree_9_weights.npy",
+      "bytes": 65704,
+      "sha256": "7c7731f30f965a4f12b09073b7b4f55cf14e74fd85445ceb29c91de7647b1745"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/bird_S04.wav",
+      "bytes": 1344080,
+      "sha256": "e50f181ee01c5f996793e3e23b19ae6076f1c33a362434e5715525f8c905e7d8"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/bird_S16.wav",
+      "bytes": 1344080,
+      "sha256": "ba34112cc87c9cb918bd2833fa22ef495899cacd36ac80545a4924e8bf5f19d3"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/bird_S18.wav",
+      "bytes": 1344080,
+      "sha256": "4613fda0d05a580b224703e8c63ddabf8fe5fb6b5469774b80278368e7cf01b7"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_000.wav",
+      "bytes": 1336400,
+      "sha256": "7ef221c23a484e928ce3fc011c2de81f8f40411c8db2ccbf11e55e737b9d5d35"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_002.wav",
+      "bytes": 1336400,
+      "sha256": "faa45248a3227784463d5c6656facf3b654a4431a1d423b0600094e412c992f8"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_0.wav",
+      "bytes": 1344080,
+      "sha256": "5730425aec7a80ca6525f37bb973549b06bd4f8219abdd80021ef41abf3a19a2"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_1.wav",
+      "bytes": 1344080,
+      "sha256": "fb861f8a8e4bf03a0c8307bacc172e58398dcc52919e31737c58975d094ca6fa"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_10.wav",
+      "bytes": 1344080,
+      "sha256": "f439c70a31b061e27d754dfd8b5c10a6f273d4a5262d4fe513c7fb80fbd5a83f"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_11.wav",
+      "bytes": 1344080,
+      "sha256": "57d6c1b99ebc39615ee25fe42fc3ed14757860ae93f795256f242c97ce4d6ff8"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_12.wav",
+      "bytes": 1344080,
+      "sha256": "1e0134c2641cacc92f2e07fdbba4a0973513928a5c8faeb2bf5ed82808962c8c"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_2.wav",
+      "bytes": 1344080,
+      "sha256": "b3d40abeae22bb039112658e55fa15a59fcced67bc9a9ca7bb27eda27fe773a0"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_3.wav",
+      "bytes": 1344080,
+      "sha256": "302197dc1950f04309cd738454fef0ebc27bf171291b10bb01c125e2ca3bae9b"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_4.wav",
+      "bytes": 1344080,
+      "sha256": "a7b8c76ccac1e6c3b88e1cecab21be50656e6f36ac498eb2a89d547e80efad32"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_5.wav",
+      "bytes": 1344080,
+      "sha256": "5db75c3442c4187a11cf6c1bc506f1c5272d215e81385f5c865e46f651a3df8f"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_6.wav",
+      "bytes": 1344080,
+      "sha256": "21e723d129c1c2c9050812a208b62f9ec242307b51f6769785bafdaad765c72f"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_7.wav",
+      "bytes": 1344080,
+      "sha256": "91711a1d210f7e665b1f10bc064ee9c30ef04847d067e65512ae46f1577c0f4f"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_8.wav",
+      "bytes": 1344080,
+      "sha256": "6b905dafb7acfdc9a67be10b5412bcee2c255f8cc3c51cc91f135a5401d3c3a4"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/source_003__tree_9.wav",
+      "bytes": 1344080,
+      "sha256": "fe4de154e4ccaf8b5b2618b8b83de1385c004210b05fc1b29571b003cc7e1c9e"
+    },
+    {
+      "path": "audio/sources/sw4d_audio_v8/sources-meta.json",
+      "bytes": 59681,
+      "sha256": "88ff1215abbda4f4de571957f364e8672e8983b4b4099da61396d5f84e23ec4b"
+    },
+    {
+      "path": "bake-manifest.json",
+      "bytes": 21279,
+      "sha256": "a837a86989ae841f86db412eff9aff1a93dfbd8b4fffffed8660a7e902b12074"
+    },
+    {
+      "path": "input/sources.json",
+      "bytes": 731,
+      "sha256": "59b37d0590b17ac8b56107560c62035ef1b4bec1eb38224ce9778909159f45ad"
+    },
+    {
+      "path": "slam/vggt_omega/extrinsics.npy",
+      "bytes": 22528,
+      "sha256": "c793b49923c65bb4139c6cdbd12f36b4cee6a6457ba125485ababca6a870ee65"
+    },
+    {
+      "path": "slam/vggt_omega/intrinsics.npy",
+      "bytes": 6428,
+      "sha256": "bc3dc575566dc5370590e49218a2e2d5cf3824a8c7992071c6c4f92db8b2ae6b"
+    },
+    {
+      "path": "slam/vggt_omega/meta.json",
+      "bytes": 410,
+      "sha256": "5f0d5e07abb970fdbb46972e35cdfb79ae2c3307a1776415d353d11d32f6a5ae"
+    }
+  ],
+  "purpose": "Interactive demo export; original selected scene files are byte-identical to the source."
+}

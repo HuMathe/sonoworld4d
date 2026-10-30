@@ -1,0 +1,244 @@
+{
+  "renderer": "legacy",
+  "normalization_policy": "preserve_amplitude",
+  "audio_world_scale": "metadata",
+  "timeline": {
+    "mode": "scene",
+    "camera_fps": 24.99999999999998,
+    "camera_duration_seconds": 10.000000000000009,
+    "camera_time_scale": 1.0,
+    "scene": {
+      "fps": 24.99999999999998,
+      "frame_count": 250,
+      "duration_seconds": 10.000000000000009,
+      "origin": "source_metadata",
+      "video_path": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/input/video.mp4",
+      "video_timing": {
+        "version": "video_cfr_v1",
+        "fps": 24.99999999999998,
+        "frame_count": 250,
+        "trajectory_start_s": 0.0,
+        "trajectory_end_s": 9.960000000000008,
+        "video_duration_s": 10.0,
+        "max_pts_error_s": 8.881784197001252e-15,
+        "pts_source": "decoded_video_presentation_timestamps",
+        "video_path": "/fs/nexus-projects/Audio23/4d/proto_new/sw4d_new/output-scenes/test-vggt/plane/input/video.mp4",
+        "video_sha256": "21fd8c70b41e2e2f60ce53a77ef5b8813e8d71a075858e57ca3ca6892575d47b",
+        "renderer_timing_mode": "legacy",
+        "trajectory_clock": "frame_index / geometry.fps"
+      }
+    },
+    "requested_duration_seconds": 10.000000000000009,
+    "output_fps": 60.0,
+    "output_frames": 600,
+    "output_duration_seconds": 10.0,
+    "interpolation": {
+      "camera": "linear_position_slerp_rotation_linear_projection",
+      "object": "linear_translation_scale_slerp_rotation",
+      "deformation": "linear_xyz_scale_slerp_rotation"
+    }
+  },
+  "visual_renderer": "layered",
+  "layered": {
+    "metadata": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/3d/background/background_v1/lifting_marble/background_layers/layers_meta.json",
+    "layers": [
+      {
+        "name": "sky",
+        "path": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/3d/background/background_v1/lifting_marble/background_sky.ply",
+        "splats": 955263
+      },
+      {
+        "name": "occluders",
+        "path": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/3d/background/background_v1/lifting_marble/background_occluders.ply",
+        "splats": 964737
+      }
+    ],
+    "compositor": "alpha_weighted_depth_support_sky",
+    "tolerance_world": 0.21567331254482275,
+    "foreground_composition": "joint_depth_sorted",
+    "soft_band_fraction": 0.05
+  },
+  "audio_world_scale_multiplier": 51.64947396659473,
+  "source_gain_policy": "camera_mix",
+  "source_peak_db_overrides": {
+    "0": 20.0
+  },
+  "scene": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane",
+  "camera_json": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectories/plane-passby-custom-camera.json",
+  "listener_mode": "moving",
+  "exact_mic_pose": false,
+  "visual_foregrounds": [
+    {
+      "object_id": 0,
+      "ply": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/3d/foreground/foreground_v1/mvsam3d/0/gaussians_fg_ref_idx.ply",
+      "trajectory": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/3d/foreground/foreground_v1/pose_extrapolation/0/transformations_aligned.json",
+      "deformation": null
+    }
+  ],
+  "fps": 60.0,
+  "num_frames": 600,
+  "duration_seconds": 10.0,
+  "sample_rate": 48000,
+  "samples": 480000,
+  "foa_channel_order": "WYZX",
+  "foa_normalization": "SN3D",
+  "wav_subtype": "FLOAT",
+  "stem_peak_equalization": false,
+  "bus_peak_normalization": false,
+  "air_absorption": false,
+  "audio_smooth_sigma": 0,
+  "source_metadata": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/sources-meta.json",
+  "static_geometry": null,
+  "dynamic_geometry": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/geometry/dyn_amb/geometry-meta.json",
+  "sources": [
+    {
+      "source_id": "source_000",
+      "source_index": 0,
+      "peak_override_db": 20.0,
+      "input_peak": 0.860107421875,
+      "source_peak": 10.0,
+      "role": "dynamic",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_0.wav",
+      "source_gain_applied": 11.626454726085722,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": null,
+      "static_point_weights": null
+    },
+    {
+      "source_id": "source_001__grass_0",
+      "source_index": 1,
+      "peak_override_db": null,
+      "input_peak": 0.3306090533733368,
+      "source_peak": 0.0033436184749007225,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_1.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_0_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_0_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_1",
+      "source_index": 2,
+      "peak_override_db": null,
+      "input_peak": 0.34831276535987854,
+      "source_peak": 0.0035226650070399046,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_2.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_1_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_1_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_2",
+      "source_index": 3,
+      "peak_override_db": null,
+      "input_peak": 0.37557822465896606,
+      "source_peak": 0.0037984144873917103,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_3.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_2_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_2_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_3",
+      "source_index": 4,
+      "peak_override_db": null,
+      "input_peak": 0.4091845452785492,
+      "source_peak": 0.004138292279094458,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_4.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_3_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_3_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_4",
+      "source_index": 5,
+      "peak_override_db": null,
+      "input_peak": 0.3391934633255005,
+      "source_peak": 0.0034304368309676647,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_5.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_4_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_4_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_5",
+      "source_index": 6,
+      "peak_override_db": null,
+      "input_peak": 0.9544493556022644,
+      "source_peak": 0.009652834385633469,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_6.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_5_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_5_weights.npy"
+    },
+    {
+      "source_id": "source_001__grass_6",
+      "source_index": 7,
+      "peak_override_db": null,
+      "input_peak": 0.4503747522830963,
+      "source_peak": 0.004554870072752237,
+      "role": "static",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_7.wav",
+      "source_gain_applied": 0.010113511205487686,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": "audio/geometry/static_grounding/points/source_001__grass_6_points_world.npy",
+      "static_point_weights": "audio/geometry/static_grounding/points/source_001__grass_6_weights.npy"
+    },
+    {
+      "source_id": "source_002",
+      "source_index": 8,
+      "peak_override_db": null,
+      "input_peak": 0.20084820687770844,
+      "source_peak": 0.00712636299431324,
+      "role": "background",
+      "audio": "/fs/nexus-projects/Audio23/proto/sonoworld4d/output-scenes/result-scenes-v3/plane/audio/sources/sw4d_audio_v6_10s/object_8.wav",
+      "source_gain_applied": 0.03548133892335755,
+      "canonical_stem_gain_applied": false,
+      "reference_distance_scale": 1.0,
+      "native_samples": 480000,
+      "static_points_world": null,
+      "static_point_weights": null
+    }
+  ],
+  "audio_format": "binaural",
+  "hrir_root": "/nfshomes/djin77/hearinganythinganywhere/HRIRs_FOA",
+  "audio_peaks": {
+    "foa": 2.344388246536255,
+    "stereo": 2.648219108581543,
+    "binaural": 181.3766326904297
+  },
+  "mp4_audio_gain": 1.0,
+  "outputs": {
+    "foa": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20_foa.wav",
+    "stereo": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20_stereo.wav",
+    "binaural": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20_binaural.wav"
+  },
+  "video": "/fs/nexus-projects/Audio23/proto/sonoworld4d/temp-data/sw4d_trajectory_renders_v3_60fps_simple/plane_y/render_20.mp4"
+}
