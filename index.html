@@ -713,6 +713,8 @@
         }
 
         @media (max-width: 768px) {
+            /* the interactive demo is meant for desktop browsers: no nav entry on phones */
+            nav._links_l9x19_177 li.nav-demo { display: none; }
             /* the 80% method figure is noticeably narrower than the text on phones */
             .method-figure { max-width: 100%; }
             .features-grid {
@@ -1189,10 +1191,10 @@
         </a> -->
         <nav class="_links_l9x19_177">
             <ul>
-                <!-- <li><a href="demo.html">Viewer</a></li> -->
-                <li><a href="#results">Demos</a></li>
+                <li><a href="#results">Results</a></li>
                 <li><a href="#abstract">Abstract</a></li>
                 <li><a href="#method">Method</a></li>
+                <li class="nav-demo"><a href="demo.html">Interactive Demo</a></li>
                 <li class="nav-dropdown" id="nav-more-research">
                     <a href="#" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                         <span class="nav-label-long">More Research</span><span class="nav-label-short">More</span>
@@ -1291,7 +1293,7 @@
 
         <section id="results">
             <div class="container" style="padding: 0;">
-                <h2>Demos</h2>
+                <h2>Results</h2>
                 <hr>
             </div>
             <p class="caption-center" style="margin-top: 10px; font-style: italic;"><span class="hint-hover">Hover over a row to play both videos.</span><span class="hint-tap">Tap a row to play or pause its videos.</span> Left: input monocular video. Right: our novel-view rendering. Turn on <b>Sound</b> in the top bar to hear the binaural audio of the right video (headphones recommended).</p>
