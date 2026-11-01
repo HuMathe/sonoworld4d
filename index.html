@@ -1298,7 +1298,8 @@
             </div>
             <p class="caption-center" style="margin-top: 10px; font-style: italic;"><span class="hint-hover">Hover over a row to play both videos.</span><span class="hint-tap">Tap a row to play its videos.</span> Left: input monocular video. Right: our novel-view rendering. Turn on <b>Sound</b> in the top bar to hear the binaural audio of the right video (headphones recommended).</p>
 
-            <h3 class="results-subtitle">Single sound source</h3>
+            <h3 class="results-subtitle">Single input video</h3>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic; text-wrap: balance;">Each scene is reconstructed from one monocular video, which may contain several dynamic sound sources.</p>
             <!-- Results: one .result-pair per scene (left: input video, right: ours). Hover a pair to play both. -->
             <div class="results-list" id="results-list-single">
 
@@ -1444,8 +1445,8 @@
 
             </div>
 
-            <h3 class="results-subtitle">Multiple sound sources</h3>
-            <p class="caption-center" style="margin-top: 10px; font-style: italic;">Each sound source is captured by its own monocular video (left two). Right: our novel-view rendering of the combined scene.</p>
+            <h3 class="results-subtitle">Multiple input videos</h3>
+            <p class="caption-center" style="margin-top: 10px; font-style: italic; text-wrap: balance;">Each dynamic sound source is captured by its own monocular video and the sources are composed into one scene.</p>
             <!-- Multi-source results: two square input videos + ours per row. -->
             <div class="results-list" id="results-list-multi">
 
